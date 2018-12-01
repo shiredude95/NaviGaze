@@ -58,5 +58,10 @@ public class FunButton extends LinearLayout {
 		return this.funButtonText.getText().toString();
 	}
 
+	public void setButtonTextColor(int i){
+
+		this.funButtonText.setTextColor(i);
+	}
+
 
 }

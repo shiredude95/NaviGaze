@@ -15,6 +15,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
+
 
 /**
  * A simple {@link} subclass.
@@ -62,12 +64,16 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
 		if (currentItemIndex < btnList.size() - 1) {
 			currentItemIndex += 1;
+		}else{
+			currentItemIndex=0;
 		}
 	}
 
 	private void decrementcurrentItemIndex() {
 		if (currentItemIndex > 0) {
 			currentItemIndex -= 1;
+		}else {
+			currentItemIndex=btnList.size()-1;
 		}
 	}
 
@@ -184,23 +190,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 			public void run() {
 
 				//handle actual button clicks
-				if (isCountdownRunning && mCountDownTimer != null) {
-					isCountdownRunning = false;
-					mCountDownTimer.cancel();
-					for (View v1 : btnList) {
-
-						if (v1 instanceof FunButton) ((FunButton) v1).setProgressBarVisibility(false);
-
-					}
-				}
-
-				for (View v1 : btnList) {
-
-					if (!(v1 instanceof FunButton))
-						v1.setBackgroundColor(getResources().getColor(android.R.color.white));
-
-				}
-
+				flushButtonColorsOnIdle(null);
 				Log.d("Randi", String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
 				button.setProgressBarVisibility(true);
 				mCountDownTimer = new CountDownTimer(timeConstant * 1000, timeConstant * 10) {
@@ -209,7 +199,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 						button.setProgressbarProgress((int) (((timeConstant * 1000 - millisUntilFinished) / (float) (timeConstant * 1000)) * 100));
 						isCountdownRunning = true;
 					}
-
 					@Override
 					public void onFinish() {
 						button.setProgressbarProgress(100);
@@ -225,49 +214,32 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 		});
 	}
 
-	//handle idle clicks
-	public void idleClick(View v) {
 
+	private void flushButtonColorsOnIdle(@Nullable View v){
 		if (isCountdownRunning && mCountDownTimer != null) {
-
 			isCountdownRunning = false;
 			mCountDownTimer.cancel();
 			for (View v1 : btnList) {
-				((FunButton) v1).setProgressBarVisibility(false);
+				if (v1 instanceof FunButton) ((FunButton) v1).setProgressBarVisibility(false);
 			}
 		}
-		Toast.makeText(getActivity(), "IDLE", Toast.LENGTH_SHORT).show();
-
+		for (View v1 : btnList) {
+			if (!(v1 instanceof FunButton)) v1.setBackgroundColor(getResources().getColor(android.R.color.white));
+		}
+		if(v!=null) v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 	}
 
+	//handle idle clicks
+	public void idleClick(View v) {flushButtonColorsOnIdle(v);}
+
 	private void idleClickNoTouch(final View v) {
-
 		getActivity().runOnUiThread(new Runnable() {
-
 			@Override
 			public void run() {
-
 				//Cancel and hide all loaders
-				if (isCountdownRunning && mCountDownTimer != null) {
-					isCountdownRunning = false;
-					mCountDownTimer.cancel();
-					for (View v1 : btnList) {
-
-						if (v1 instanceof FunButton)
-							((FunButton) v1).setProgressBarVisibility(false);
-						else {
-							v1.setBackgroundColor(getResources().getColor(android.R.color.white));
-						}
-					}
-				}
-
-
-				v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-
+				flushButtonColorsOnIdle(v);
 			}
 		});
-
-//		Toast.makeText(getActivity(),"IDLE",Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
