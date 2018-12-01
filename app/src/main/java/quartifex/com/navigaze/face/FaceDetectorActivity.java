@@ -112,8 +112,12 @@ public class FaceDetectorActivity extends Fragment {
 
         Context context = getActivity().getApplicationContext();
         FaceDetector detector = new FaceDetector.Builder(context)
+                .setTrackingEnabled(true)
+                .setMinFaceSize(0.3f)
+                .setProminentFaceOnly(true)
                 .setClassificationType(FaceDetector.ALL_CLASSIFICATIONS)
                 .build();
+
 
         detector.setProcessor(
                 new MultiProcessor.Builder<>(new GraphicFaceTrackerFactory())
@@ -134,7 +138,7 @@ public class FaceDetectorActivity extends Fragment {
         cameraSource = new CameraSource.Builder(context, detector)
                 .setRequestedPreviewSize(640, 480)
                 .setFacing(CameraSource.CAMERA_FACING_FRONT)
-                .setRequestedFps(15.0f)
+                .setRequestedFps(30.0f)
                 .build();
     }
 
