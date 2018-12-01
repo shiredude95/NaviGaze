@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NaviGaze</string>
+    <string name="no_camera_permission">No Camera permission</string>
+    <string name="ok">Permission Granted</string>
+</resources>
