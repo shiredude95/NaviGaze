@@ -27,7 +27,8 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
 	private int RIGHT_EYE_OPEN_FLAG = 1;
 	private int NO_ACTION_FLAG = 2;
 	private float MIN_PROBABILITY_THRESHOLD = 0.2f;
-
+	private int currentAction = -1;
+	private int prevAction = -1;
 
 	HomeFragment homeFragment;
 
@@ -68,16 +69,34 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
 			rightEyeOpenProbs.add(face.getIsRightEyeOpenProbability());
 		}else {
 			if (getAction(leftEyeOpenProbs, rightEyeOpenProbs) == LEFT_EYE_OPEN_FLAG) {
-				homeFragment.handleRightBlink();
+				updateCurrentPreviousFunction(LEFT_EYE_OPEN_FLAG);
 			}else if (getAction(leftEyeOpenProbs, rightEyeOpenProbs) == RIGHT_EYE_OPEN_FLAG) {
-				homeFragment.handleLeftBlink();
+                updateCurrentPreviousFunction(RIGHT_EYE_OPEN_FLAG);
 			} else {
-				homeFragment.handleBothOpenOrClose();
-			}
+			    updateCurrentPreviousFunction(NO_ACTION_FLAG);
+            }
 			leftEyeOpenProbs.clear();
 			rightEyeOpenProbs.clear();
 		}
 	}
+
+	private void updateCurrentPreviousFunction (int forAction) {
+	    currentAction = forAction;
+        Log.d("Action update", "updateCurrentPreviousFunction:: current action::"+currentAction
+                +"previous action::"+prevAction);
+	    if (currentAction != prevAction) {
+	        if (currentAction == LEFT_EYE_OPEN_FLAG) {
+                homeFragment.handleRightBlink();
+            } else if (currentAction == RIGHT_EYE_OPEN_FLAG) {
+                homeFragment.handleLeftBlink();
+            }else {
+                homeFragment.handleBothOpenOrClose();
+            }
+        }else {
+            return;
+        }
+        prevAction = currentAction;
+    }
 
 	private int getAction (List<Float> leftEyeOpenProbs, List<Float> rightEyeOpenProbs) {
 		int leftEyeOpenCount = 0;
