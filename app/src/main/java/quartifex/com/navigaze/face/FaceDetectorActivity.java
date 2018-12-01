@@ -3,7 +3,6 @@ package quartifex.com.navigaze.face;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -26,6 +25,7 @@ import java.io.IOException;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import quartifex.com.navigaze.FaceActivity;
 import quartifex.com.navigaze.R;
 import quartifex.com.navigaze.camera.CameraActivity;
@@ -295,7 +295,7 @@ public class FaceDetectorActivity extends Fragment {
             mOverlay.add(mFaceGraphic);
 //            mFaceGraphic.updateFace(face);
             ((FaceActivity)getActivity()).getFace(face);
-            Log.d("FACE_DATA",face.getIsLeftEyeOpenProbability() + ", " + face.getIsRightEyeOpenProbability());
+//            Log.d("FACE_DATA",face.getIsLeftEyeOpenProbability() + ", " + face.getIsRightEyeOpenProbability());
         }
 
         /**

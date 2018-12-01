@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragment_container_parent"
+    tools:context=".FaceActivity">
 
     <fragment android:name="quartifex.com.navigaze.face.FaceDetectorActivity"
         android:id="@+id/headlines_fragment"
@@ -10,17 +12,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <TextView
-        android:id="@+id/cameraText"
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:background="@android:color/white"
-        android:text="fuck you camera"/>
+        android:background="@android:color/white"/>
 
-    <FrameLayout
-        android:id="@+id/container"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_container_list">
+    </FrameLayout>
 
-</RelativeLayout>
+
+</FrameLayout>
