@@ -61,15 +61,13 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
 
 
 
-	public boolean flagOn=true;
 	@Override
 	public void getFace(Face face) {
 		if (leftEyeOpenProbs.size() < FPS) {
 			leftEyeOpenProbs.add(face.getIsLeftEyeOpenProbability());
 			rightEyeOpenProbs.add(face.getIsRightEyeOpenProbability());
 		}else {
-			if ((getAction(leftEyeOpenProbs, rightEyeOpenProbs) == LEFT_EYE_OPEN_FLAG) && flagOn) {
-				flagOn=false;
+			if (getAction(leftEyeOpenProbs, rightEyeOpenProbs) == LEFT_EYE_OPEN_FLAG) {
 				homeFragment.handleRightBlink();
 			}else if (getAction(leftEyeOpenProbs, rightEyeOpenProbs) == RIGHT_EYE_OPEN_FLAG) {
 				homeFragment.handleLeftBlink();

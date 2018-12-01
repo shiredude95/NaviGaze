@@ -24,12 +24,12 @@
         android:background="?android:selectableItemBackground"
         custom:buttonText="Speed Dial"/>
 
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="25dp"-->
-        <!--android:onClick="idleClick"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true" />-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:onClick="idleClick"
+        android:clickable="true"
+        android:focusable="true" />
 
     <quartifex.com.navigaze.FunButton
         android:id="@+id/button_sos"
@@ -41,12 +41,12 @@
         android:focusable="true"/>
 
 
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="25dp"-->
-        <!--android:onClick="idleClick"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true"/>-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:onClick="idleClick"
+        android:clickable="true"
+        android:focusable="true"/>
 
     <quartifex.com.navigaze.FunButton
         android:id="@+id/button_smart_home"

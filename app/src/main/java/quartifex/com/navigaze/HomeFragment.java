@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +24,7 @@ import java.util.List;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends BaseFragment implements View.OnClickListener{
+public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
 
 	// TODO: Rename parameter arguments, choose names that match
@@ -30,10 +32,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
 
 	View rootView;
 	private OnFragmentInteractionListener mListener;
-	private int timeConstant=5;
+	private int timeConstant = 5;
 
 
-	private boolean isCountdownRunning=false;
+	private boolean isCountdownRunning = false;
 
 	private FunButton btnSpeedDial;
 	private FunButton btnSOS;
@@ -42,51 +44,48 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
 	private FunButton btnMedia;
 	private FunButton btnMessage;
 
-	private List<View> btnList =new ArrayList<>();
+	private List<View> btnList = new ArrayList<>();
 	private CountDownTimer mCountDownTimer;
 
 
-	private int currentItemIndex =0;
-
-	private void incrementcurrentItemIndex(){
-
-		if(currentItemIndex < btnList.size()-1){
-			currentItemIndex +=1;
-		}
-	}
-
-	private void decrementcurrentItemIndex(){
-		if(currentItemIndex >0){
-			currentItemIndex -=1;
-		}
-	}
-
-
-	private int getCurrentItemIndex(){
-		return currentItemIndex;
-	}
-
+	private int currentItemIndex = 0;
 
 	public HomeFragment() {
 		// Required empty public constructor
 	}
 
-	public static HomeFragment newInstance(){
+	public static HomeFragment newInstance() {
 		return new HomeFragment();
 	}
 
+	private void incrementcurrentItemIndex() {
+
+		if (currentItemIndex < btnList.size() - 1) {
+			currentItemIndex += 1;
+		}
+	}
+
+	private void decrementcurrentItemIndex() {
+		if (currentItemIndex > 0) {
+			currentItemIndex -= 1;
+		}
+	}
+
+	private int getCurrentItemIndex() {
+		return currentItemIndex;
+	}
 
 	@Override
 	public View customFeatureFragment(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.fragment_home,parent,false);
+		rootView = inflater.inflate(R.layout.fragment_home, parent, false);
 
 
-		btnSpeedDial =rootView.findViewById(R.id.button_speed_dial);
-		btnSOS =rootView.findViewById(R.id.button_sos);
-		btnSmartHome =rootView.findViewById(R.id.button_smart_home);
-		btnNearby =rootView.findViewById(R.id.button_nearby);
-		btnMedia =rootView.findViewById(R.id.button_media);
-		btnMessage =rootView.findViewById(R.id.button_messages);
+		btnSpeedDial = rootView.findViewById(R.id.button_speed_dial);
+		btnSOS = rootView.findViewById(R.id.button_sos);
+		btnSmartHome = rootView.findViewById(R.id.button_smart_home);
+		btnNearby = rootView.findViewById(R.id.button_nearby);
+		btnMedia = rootView.findViewById(R.id.button_media);
+		btnMessage = rootView.findViewById(R.id.button_messages);
 
 		getAllViewsInList(rootView.findViewById(R.id.ll_home_fragment_container));
 		setAllViewsOnClickListener();
@@ -97,12 +96,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
 	}
 
 
-	private void setAllViewsOnClickListener(){
-		for(View v:btnList){
+	private void setAllViewsOnClickListener() {
+		for (View v : btnList) {
 			v.setOnClickListener(this);
 		}
 	}
-
 
 
 	@Override
@@ -121,10 +119,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
 	public void handleBothOpenOrClose() {
 
 	}
-
-
-
-
 
 
 	// TODO: Rename method, update argument and hook method into UI event
@@ -153,69 +147,143 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()){
+		switch (v.getId()) {
 			case R.id.button_speed_dial:
-				countDownFeature(btnSpeedDial,new Intent(Intent.ACTION_CALL));
+				uiCallToCountDown(btnSpeedDial, new Intent(Intent.ACTION_CALL));
 				break;
 			case R.id.button_sos:
-				countDownFeature(btnSOS,new Intent(Intent.ACTION_CALL));
+				uiCallToCountDown(btnSOS, new Intent(Intent.ACTION_CALL));
 				break;
 			case R.id.button_smart_home:
-				countDownFeature(btnSmartHome,new Intent(Intent.ACTION_CALL));
+				uiCallToCountDown(btnSmartHome, new Intent(Intent.ACTION_CALL));
 				break;
 			case R.id.button_nearby:
-				countDownFeature(btnNearby,new Intent(Intent.ACTION_CALL));
+				uiCallToCountDown(btnNearby, new Intent(Intent.ACTION_CALL));
 				break;
 			case R.id.button_media:
-				countDownFeature(btnMedia,new Intent(Intent.ACTION_CALL));
+				uiCallToCountDown(btnMedia, new Intent(Intent.ACTION_CALL));
 				break;
 			case R.id.button_messages:
-				countDownFeature(btnMessage,new Intent(Intent.ACTION_CALL));
+				uiCallToCountDown(btnMessage, new Intent(Intent.ACTION_CALL));
 				break;
 			case -1:
-				idleClickNoTouch();
+				idleClickNoTouch(v);
 				break;
 			default:
-				Toast.makeText(getActivity(),"IDLE",Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "IDLE", Toast.LENGTH_SHORT).show();
 				break;
 		}
 	}
 
 
-		//handle actual button clicks
-	private void countDownFeature(final FunButton button, Intent i){
+	private void uiCallToCountDown(final FunButton button, Intent i) {
 
-		if(isCountdownRunning && mCountDownTimer!=null){
+		getActivity().runOnUiThread(new Runnable() {
 
-			isCountdownRunning=false;
-			mCountDownTimer.cancel();
-			for(View v: btnList){
+			@Override
+			public void run() {
 
-				if(v!=button){
-					((FunButton)v).setProgressBarVisibility(false);
+				//handle actual button clicks
+				if (isCountdownRunning && mCountDownTimer != null) {
+					isCountdownRunning = false;
+					mCountDownTimer.cancel();
+					for (View v1 : btnList) {
+
+						if (v1 instanceof FunButton) ((FunButton) v1).setProgressBarVisibility(false);
+
+					}
 				}
+
+				for (View v1 : btnList) {
+
+					if (!(v1 instanceof FunButton))
+						v1.setBackgroundColor(getResources().getColor(android.R.color.white));
+
+				}
+
+				Log.d("Randi", String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+				button.setProgressBarVisibility(true);
+				mCountDownTimer = new CountDownTimer(timeConstant * 1000, timeConstant * 10) {
+					@Override
+					public void onTick(long millisUntilFinished) {
+						button.setProgressbarProgress((int) (((timeConstant * 1000 - millisUntilFinished) / (float) (timeConstant * 1000)) * 100));
+						isCountdownRunning = true;
+					}
+
+					@Override
+					public void onFinish() {
+						button.setProgressbarProgress(100);
+						Toast.makeText(getActivity(), button.getButtonText(), Toast.LENGTH_LONG).show();
+						button.setProgressBarVisibility(false);
+						isCountdownRunning = false;
+					}
+				};
+				mCountDownTimer.start();
 			}
 
-		}
 
-
-		button.setProgressBarVisibility(true);
-		mCountDownTimer = new CountDownTimer(timeConstant*1000, timeConstant*10) {
-			@Override
-			public void onTick(long millisUntilFinished) {
-				button.setProgressbarProgress((int) (((timeConstant*1000 - millisUntilFinished) / (float) (timeConstant*1000)) * 100));
-				isCountdownRunning=true;
-			}
-			@Override
-			public void onFinish() {
-				button.setProgressbarProgress(100);
-				Toast.makeText(getActivity(),button.getButtonText(),Toast.LENGTH_LONG).show();
-				button.setProgressBarVisibility(false);
-				isCountdownRunning=false;
-			}
-		};
-		mCountDownTimer.start();
+		});
 	}
+
+	//handle idle clicks
+	public void idleClick(View v) {
+
+		if (isCountdownRunning && mCountDownTimer != null) {
+
+			isCountdownRunning = false;
+			mCountDownTimer.cancel();
+			for (View v1 : btnList) {
+				((FunButton) v1).setProgressBarVisibility(false);
+			}
+		}
+		Toast.makeText(getActivity(), "IDLE", Toast.LENGTH_SHORT).show();
+
+	}
+
+	private void idleClickNoTouch(final View v) {
+
+		getActivity().runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				//Cancel and hide all loaders
+				if (isCountdownRunning && mCountDownTimer != null) {
+					isCountdownRunning = false;
+					mCountDownTimer.cancel();
+					for (View v1 : btnList) {
+
+						if (v1 instanceof FunButton)
+							((FunButton) v1).setProgressBarVisibility(false);
+						else {
+							v1.setBackgroundColor(getResources().getColor(android.R.color.white));
+						}
+					}
+				}
+
+
+				v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+
+			}
+		});
+
+//		Toast.makeText(getActivity(),"IDLE",Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void getAllViewsInList(View view) {
+
+
+		if (btnList.size() != 0)
+			btnList.clear();
+
+		ViewGroup viewGroup = (ViewGroup) view;
+		for (int i = 0; i < viewGroup.getChildCount(); i++) {
+			View v1 = viewGroup.getChildAt(i);
+			btnList.add(v1);
+		}
+	}
+
 
 	/**
 	 * This interface must be implemented by activities that contain this
@@ -230,46 +298,5 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
 	public interface OnFragmentInteractionListener {
 		// TODO: Update argument type and name
 		void onFragmentInteraction(Uri uri);
-	}
-
-	//handle idle clicks
-	public void idleClick(View v){
-
-		if(isCountdownRunning && mCountDownTimer!=null){
-
-			isCountdownRunning=false;
-			mCountDownTimer.cancel();
-			for(View v1: btnList){
-				((FunButton)v1).setProgressBarVisibility(false);
-			}
-		}
-		Toast.makeText(getActivity(),"IDLE",Toast.LENGTH_SHORT).show();
-
-	}
-
-	private void idleClickNoTouch(){
-		if(isCountdownRunning && mCountDownTimer!=null){
-			isCountdownRunning=false;
-			mCountDownTimer.cancel();
-			for(View v1: btnList){
-				((FunButton)v1).setProgressBarVisibility(false);
-			}
-		}
-		Toast.makeText(getActivity(),"IDLE",Toast.LENGTH_SHORT).show();
-	}
-
-
-	@Override
-	public void getAllViewsInList(View view) {
-
-
-		if(btnList.size()!=0)
-			btnList.clear();
-
-		ViewGroup viewGroup=(ViewGroup)view;
-		for(int i=0;i<viewGroup.getChildCount();i++){
-			View v1=viewGroup.getChildAt(i);
-			btnList.add(v1);
-		}
 	}
 }
