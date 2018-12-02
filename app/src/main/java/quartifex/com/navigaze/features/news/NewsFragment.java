@@ -180,7 +180,6 @@ public class NewsFragment extends BaseFragment implements View.OnClickListener{
 
 				//handle actual button clicks
 //				flushButtonColorsOnIdle(null);
-				Log.d("Randi", String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
 				button.setProgressBarVisibility(true);
 
 				btnStable.setBackgroundColor(getResources().getColor(android.R.color.white));
