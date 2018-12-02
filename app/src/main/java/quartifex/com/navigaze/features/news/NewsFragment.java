@@ -12,13 +12,7 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
-
-import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
-import com.yuyakaido.android.cardstackview.CardStackListener;
-import com.yuyakaido.android.cardstackview.CardStackView;
-import com.yuyakaido.android.cardstackview.Direction;
-import com.yuyakaido.android.cardstackview.StackFrom;
-import com.yuyakaido.android.cardstackview.SwipeAnimationSetting;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +24,7 @@ import quartifex.com.navigaze.FaceActivity;
 import quartifex.com.navigaze.FunButton;
 import quartifex.com.navigaze.R;
 
-public class NewsFragment extends BaseFragment implements View.OnClickListener,CardStackListener {
+public class NewsFragment extends BaseFragment implements View.OnClickListener{
 
 
 	private boolean isCountdownRunning = false;
@@ -48,12 +42,10 @@ public class NewsFragment extends BaseFragment implements View.OnClickListener,C
 	private List<View> btnList = new ArrayList<>();
 	private CountDownTimer mCountDownTimer;
 
+	private TextView newsTitle;
+	private TextView newsDetail;
 
-	private CardStackLayoutManager manager;
-	private NewsAdapter adapter;
-	private CardStackView cardStackView;
-
-
+	private List<NewsItem> newsItemList;
 
 	//empty constructor
 	public NewsFragment(){ }
@@ -67,7 +59,7 @@ public class NewsFragment extends BaseFragment implements View.OnClickListener,C
 
 	private void incrementcurrentItemIndex() {
 
-		if (currentItemIndex < btnList.size() - 1) {
+		if (currentItemIndex < newsItemList.size() - 1) {
 			currentItemIndex += 1;
 		}else{
 			currentItemIndex=0;
@@ -78,7 +70,7 @@ public class NewsFragment extends BaseFragment implements View.OnClickListener,C
 		if (currentItemIndex > 0) {
 			currentItemIndex -= 1;
 		}else {
-			currentItemIndex=btnList.size()-1;
+			currentItemIndex=newsItemList.size()-1;
 		}
 	}
 
@@ -93,29 +85,15 @@ public class NewsFragment extends BaseFragment implements View.OnClickListener,C
 
 
 		btnNext=rootView.findViewById(R.id.button_right_news);
-
-
 		btnStable=rootView.findViewById(R.id.button_idle_news);
+
+
+		newsTitle=rootView.findViewById(R.id.news_item_title);
+		newsDetail=rootView.findViewById(R.id.news_item_content);
+
 
 		getAllViewsInList(rootView.findViewById(R.id.ll_news_control_container));
 		setAllViewsOnClickListener();
-
-
-//		btnStable.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				btnStable.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-//				btnStable.setTextColor(getResources().getColor(android.R.color.white));
-//			}
-//		});
-
-//		btnNext.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				btnStable.setTextColor(getResources().getColor(android.R.color.darker_gray));
-//			}
-//		});
-
 
 		return rootView;
 	}
@@ -123,30 +101,15 @@ public class NewsFragment extends BaseFragment implements View.OnClickListener,C
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		setupCardStackView();
+		newsItemList=createNewsItems();
+		newsTitle.setText(newsItemList.get(getCurrentItemIndex()).newsTitle);
+		newsDetail.setText(newsItemList.get(getCurrentItemIndex()).newsContent);
+
 	}
 
-	private void setupCardStackView() {
-		initialize();
-	}
 
 
-	private void initialize() {
-		manager = new CardStackLayoutManager(getActivity(), this);
-		manager.setStackFrom(StackFrom.None);
-		manager.setVisibleCount(3);
-		manager.setTranslationInterval(8.0f);
-		manager.setScaleInterval(0.95f);
-		manager.setSwipeThreshold(0.3f);
-		manager.setMaxDegree(20.0f);
-		manager.setDirections(Direction.HORIZONTAL);
-		manager.setCanScrollHorizontal(true);
-		manager.setCanScrollVertical(true);
-		adapter = new NewsAdapter(getContext(), createNewsItems());
-		cardStackView = getActivity().findViewById(R.id.card_stack_view);
-		cardStackView.setLayoutManager(manager);
-		cardStackView.setAdapter(adapter);
-	}
+
 
 
 
@@ -206,7 +169,6 @@ public class NewsFragment extends BaseFragment implements View.OnClickListener,C
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		((ViewManager)cardStackView.getParent()).removeView(cardStackView);
 	}
 
 	private void uiCallToCountDown(final FunButton button, final String action) {
@@ -259,13 +221,11 @@ public class NewsFragment extends BaseFragment implements View.OnClickListener,C
 
 
 	private void nextAction(){
-		SwipeAnimationSetting setting = new SwipeAnimationSetting.Builder()
-				.setDirection(Direction.Right)
-				.setDuration(200)
-				.setInterpolator(new AccelerateInterpolator())
-				.build();
-		manager.setSwipeAnimationSetting(setting);
-		cardStackView.swipe();
+
+	    incrementcurrentItemIndex();
+	    newsTitle.setText(newsItemList.get(getCurrentItemIndex()).newsTitle);
+	    newsDetail.setText(newsItemList.get(getCurrentItemIndex()).newsContent);
+
 	}
 
 
@@ -320,37 +280,18 @@ public class NewsFragment extends BaseFragment implements View.OnClickListener,C
 		}
 	}
 
-	@Override
-	public void onCardDragging(Direction direction, float ratio) {
-
-	}
-
-	@Override
-	public void onCardSwiped(Direction direction) {
-
-	}
-
-	@Override
-	public void onCardRewound() {
-
-	}
-
-	@Override
-	public void onCardCanceled() {
-
-	}
 
 	private List<NewsItem> createNewsItems() {
 
 		List<NewsItem> newsItems = new ArrayList<>();
 
 		newsItems.add(new NewsItem(0,getActivity().getResources().getString(R.string.art_title_1),getActivity().getResources().getString(R.string.art_content_1)));
-		newsItems.add(new NewsItem(0,getActivity().getResources().getString(R.string.art_title_2),getActivity().getResources().getString(R.string.art_content_2)));
-		newsItems.add(new NewsItem(0,getActivity().getResources().getString(R.string.art_title_3),getActivity().getResources().getString(R.string.art_content_3)));
-		newsItems.add(new NewsItem(0,getActivity().getResources().getString(R.string.art_title_4),getActivity().getResources().getString(R.string.art_content_4)));
-		newsItems.add(new NewsItem(0,getActivity().getResources().getString(R.string.art_title_6),getActivity().getResources().getString(R.string.art_content_6)));
-		newsItems.add(new NewsItem(0,getActivity().getResources().getString(R.string.art_title_8),getActivity().getResources().getString(R.string.art_content_8)));
-		newsItems.add(new NewsItem(0,getActivity().getResources().getString(R.string.art_title_9),getActivity().getResources().getString(R.string.art_content_9)));
+		newsItems.add(new NewsItem(1,getActivity().getResources().getString(R.string.art_title_2),getActivity().getResources().getString(R.string.art_content_2)));
+		newsItems.add(new NewsItem(2,getActivity().getResources().getString(R.string.art_title_3),getActivity().getResources().getString(R.string.art_content_3)));
+		newsItems.add(new NewsItem(3,getActivity().getResources().getString(R.string.art_title_4),getActivity().getResources().getString(R.string.art_content_4)));
+		newsItems.add(new NewsItem(4,getActivity().getResources().getString(R.string.art_title_6),getActivity().getResources().getString(R.string.art_content_6)));
+		newsItems.add(new NewsItem(5,getActivity().getResources().getString(R.string.art_title_8),getActivity().getResources().getString(R.string.art_content_8)));
+		newsItems.add(new NewsItem(6,getActivity().getResources().getString(R.string.art_title_9),getActivity().getResources().getString(R.string.art_content_9)));
 
 
 

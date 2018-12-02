@@ -40,11 +40,12 @@ import quartifex.com.navigaze.POJO.Data;
 import quartifex.com.navigaze.POJO.ResponseObject;
 import quartifex.com.navigaze.face.FaceDetectorActivity;
 
-import quartifex.com.navigaze.news.NewsFragment;
+
 
 import quartifex.com.navigaze.features.MessageFragment;
 import quartifex.com.navigaze.features.NearbyFragment;
 import quartifex.com.navigaze.features.SmartHomeFragment;
+import quartifex.com.navigaze.features.news.NewsFragment;
 
 public class FaceActivity extends AppCompatActivity implements FaceDetectorActivity.FaceListener, HomeFragment.OnFragmentInteractionListener, Network.NetworkListener, BaseFragment.FragmentActionListener {
 
@@ -84,6 +85,8 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
 
 	    // finally change the color
 	    window.setStatusBarColor(getResources().getColor(android.R.color.black));
+
+	    getSupportActionBar().setTitle("Home");
 
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 1);
@@ -203,6 +206,11 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
 
 
     @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+    }
+
+    @Override
     public void onActionClick(String action) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -212,15 +220,19 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
                 senSOS();
                 break;
             case HomeFragment.MEDIA:
+                getSupportActionBar().setTitle("News");
                 currentFragmet = new NewsFragment();
                 break;
             case HomeFragment.MESSAGE:
+                getSupportActionBar().setTitle("Send Message");
                 currentFragmet = new MessageFragment();
                 break;
             case HomeFragment.NEARBY:
+                getSupportActionBar().setTitle("Accessible Places");
                 currentFragmet = new NearbyFragment();
                 break;
             case HomeFragment.SMART_HOME:
+                getSupportActionBar().setTitle("Smart Home");
                 currentFragmet = new SmartHomeFragment();
                 break;
         }
@@ -267,6 +279,13 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.remove(currentFragmet);
         currentFragmet = homeFragment;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                getSupportActionBar().setTitle("Home");
+            }
+        });
+
         fragmentTransaction.add(R.id.fragment_container_list, currentFragmet).commit();
     }
 

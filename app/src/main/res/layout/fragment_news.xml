@@ -12,16 +12,47 @@
     android:showDividers="middle"
     tools:context=".HomeFragment">
 
-    <com.yuyakaido.android.cardstackview.CardStackView
-        android:id="@+id/card_stack_view"
+
+
+
+
+    <LinearLayout
+        android:background="@drawable/news_bg_shape"
         android:layout_width="match_parent"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
         android:layout_above="@id/control_content_divider"
-        android:layout_height="match_parent">
-    </com.yuyakaido.android.cardstackview.CardStackView>
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/news_item_title"
+            android:fontFamily="@font/ps_bold_italic"
+            android:textSize="24sp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="#9e9e9e"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
+
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/news_item_content"
+            android:fontFamily="@font/ps_reg"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
 
 
     <View
@@ -29,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:background="@android:color/darker_gray"
-        android:layout_alignTop="@id/ll_news_control_container"/>
+        android:layout_above="@id/ll_news_control_container"/>
 
     <LinearLayout
         android:layout_alignParentBottom="true"
@@ -71,9 +102,6 @@
 
 
     </LinearLayout>
-
-
-
 
 
 

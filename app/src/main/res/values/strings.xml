@@ -11,34 +11,28 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
-
     <string name="art_title_1">Brazilian long term rentals service QuintoAndar raises $64M Series C</string>
-    <string name="art_content_1">There’s quite a bit wrong with real estate in Brazil, according to QuintoAndar founder and CEO Gabriel Braga. Those seeking long term rentals in big Brazilian cities like São Paulo and Rio de Janeiro are throttled by bureaucratic policies that enforce outrageously expensive deposits, the requirement of local cosigners and sky-high insurance fees. On the supply side, amateur landlords are tunnel visioned on making money from transactions, creating a low quality of service and many wasted hours of apartment hunting for tenants. This is where QuintoAndar, a São Paulo-based rental marketplace, comes in. Now, the 600-person company has raised a $64 million (R$ 250 million) round led by General Atlantic to accelerate expansion in Brazil.</string>
-
+    <string name="art_content_1">There’s quite a bit wrong with real estate in Brazil, according to QuintoAndar founder and CEO Gabriel Braga. Those seeking long term rentals in big Brazilian cities like São Paulo and Rio de Janeiro are throttled by bureaucratic policies that enforce outrageously expensive deposits, the requirement of local cosigners and sky-high insurance fees. On the supply side, amateur landlords are tunnel visioned on making money from transactions, creating a low quality of service and many wasted hours of apartment hunting for tenants. This is where QuintoAndar, a São Paulo-based rental marketplace, comes in.</string>
 
 
     <string name="art_title_2">Robot couriers scoop up early-stage cash</string>
     <string name="art_content_2">
         Much of the last couple of decades of innovation has centered around finding ways to get what we want without leaving the sofa.
         So far, online ordering and on-demand delivery have allowed us to largely accomplish this goal. Just point, click and wait. But there’s one catch: Delivery people. We can never all lie around ordering pizzas if someone still has to deliver them.
-        Enter robots. In tech-futurist circles, it’s pretty commonplace to hear predictions about how some medley of autonomous vehicles and AI-enabled bots will take over doorstep deliveries in the coming years. They’ll bring us takeout, drop off our packages and displace lots of humans who currently make a living doing these things.
-        If this vision does become reality, there’s a strong chance it’ll largely be due to a handful of early-stage startups currently working to roboticize last-mile delivery.</string>
+        Enter robots. In tech-futurist circles, it’s pretty commonplace to hear predictions about how some medley of autonomous vehicles and AI-enabled bots will take over doorstep deliveries in the coming years.</string>
 
     <string name="art_title_3">Reddit co-founder Alexis Ohanian brings Armenian brandy to the US</string>
     <string name="art_content_3">
         Contributor Brett Moskowitz writes about cocktails and spirits for a variety of publications, including Food and Wine, Esquire, Saveur, Tasting Table, Liquor.com, Neatpour, and others. He lives in New York City.
         When Alexis Ohanian, co-founder of Reddit, approached the members-only spirits subscription club Flaviar about bringing an Armenian brandy to market, he saw it as a unique opportunity to honor his paternal heritage.
-        “My father’s side all fled during the genocide,” Ohanian told me in an interview. “He grew up pretty Americanized, but the food and drink were the big parts of the culture that were passed down.”
-        Ohanian spent some time in Armenia as an adult and became acquainted with the tradition of taking shots of the local brandy, called “konyak,” out of sliced apricots.</string>
+        “My father’s side all fled during the genocide,” Ohanian told me in an interview.</string>
 
     <string name="art_title_4">The economics and tradeoffs of ad-funded smart city tech</string>
-    <string name="art_content_4">
-        When we talk about “Smart Cities”, we tend to focus on these long-term utopian visions of perfectly clean, efficient, IoT-connected cities that adjust to our environment, our movements, and our every desire. Anyone who spent hours waiting for transit the last time the weather turned south can tell you that we’ve got a long way to go.
-        But before cities can have the snazzy applications that do things like adjust infrastructure based on real-time conditions, cities first need to build out the platform and technology-base that applications can be built on, as McKinsey’s Global Institute explained in an in-depth report released earlier this summer. This means building out the network of sensors, connected devices and infrastructure needed to track city data.
+    <string name="art_content_4">When we talk about “Smart Cities”, we tend to focus on these long-term utopian visions of perfectly clean, efficient, IoT-connected cities that adjust to our environment, our movements, and our every desire. Anyone who spent hours waiting for transit the last time the weather turned south can tell you that we’ve got a long way to go. But before cities can have the snazzy applications that do things like adjust infrastructure based on real-time conditions, cities first need to build out the platform and technology-base that applications can be built on.
     </string>
 
     <string name="art_title_6">The battle over the driving experience is heating up and will be won in software</string>
-    <string name="art_content_6">Sirius XM’s recent all-stock $3.5-billion purchase of the music-streaming service Pandora  raised a lot of eyebrows. A big question was why Sirius paid so much. Is Pandora’s music library and customer base really worth that amount? The answer is that this was a strategic move by Sirius in a battle that is far bigger than radio. The real battle, which will become much more visible in the coming years, is over the driving experience.People spend a lot of time commuting in their cars. That time is fixed and won’t likely change. However, what is changing is the way we drive. We’re already seeing many new cars with driver assist features, and automakers (and tech companies) are working hard to bring fully autonomous cars to the market as quickly as possible.</string>
+    <string name="art_content_6">Sirius XM’s recent all-stock $3.5-billion purchase of the music-streaming service Pandora  raised a lot of eyebrows. A big question was why Sirius paid so much. Is Pandora’s music library and customer base really worth that amount? The answer is that this was a strategic move by Sirius in a battle that is far bigger than radio. The real battle, which will become much more visible in the coming years, is over the driving experience.People spend a lot of time commuting in their cars. That time is fixed and won’t likely change. </string>
 
 
     <string name="art_title_8">Facebook adds free TV shows Buffy, Angel, Firefly to redefine Watch</string>
@@ -50,5 +44,6 @@
 
     <string name="art_title_10">The International Space Station’s new robot is a freaky floating space Alexa</string>
     <string name="art_content_10">Meet Cimon. The 3D printed floating robot head was developed by Airbus for the German Space Agency. He’s been a crew member of the International Space Station since June, though as Gizmodo notes, this is the first time we’re seeing him in action. Really the first time we’re seeing him in action.</string>
+    <string name="title_activity_splash">SplashActivity</string>
 
 </resources>
