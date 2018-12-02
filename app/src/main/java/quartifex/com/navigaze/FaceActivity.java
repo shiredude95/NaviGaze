@@ -21,7 +21,7 @@ import quartifex.com.navigaze.features.NearbyFragment;
 
 
 
-public class FaceActivity extends AppCompatActivity implements FaceDetectorActivity.FaceListener, HomeFragment.OnFragmentInteractionListener, Network.NetworkListener, HomeFragment.HomeActionListener {
+public class FaceActivity extends AppCompatActivity implements FaceDetectorActivity.FaceListener, HomeFragment.OnFragmentInteractionListener, Network.NetworkListener, BaseFragment.FragmentActionListener {
 
     private List<Float> leftEyeOpenProbs;
     private List<Float> rightEyeOpenProbs;
@@ -49,6 +49,7 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
 
     public void displayFragment() {
         homeFragment = HomeFragment.newInstance();
+        currentFragmet = homeFragment;
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragment_container_list, homeFragment).addToBackStack(null).commit();
@@ -91,11 +92,11 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
                 + "previous action::" + prevAction);
         if (currentAction != prevAction) {
             if (currentAction == LEFT_EYE_OPEN_FLAG) {
-                homeFragment.handleRightBlink();
+                currentFragmet.handleRightBlink();
             } else if (currentAction == RIGHT_EYE_OPEN_FLAG) {
-                homeFragment.handleLeftBlink();
+                currentFragmet.handleLeftBlink();
             } else if (currentAction == BOTH_EYE_CLOSED) {
-	            homeFragment.handleBothOpenOrClose();
+	            currentFragmet.handleBothOpenOrClose();
             } else {
                 // NO ACTION
             }
@@ -146,7 +147,7 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
     }
 
     public void idleClick(View v) {
-        homeFragment.idleClick(v);
+        currentFragmet.idleClick(v);
     }
 
     private boolean isBothEyeClosed (float firstEyeProb, float secondEyeProb) {
@@ -181,8 +182,17 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
                 break;
         }
 
+        fragmentTransaction.remove(homeFragment);
+        fragmentTransaction.add(R.id.fragment_container_list, currentFragmet).commit();
+    }
 
-        fragmentTransaction.add(R.id.fragment_container_list, currentFragmet).addToBackStack(null).commit();
+    @Override
+    public void onBackAction() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(currentFragmet);
+        currentFragmet = homeFragment;
+        fragmentTransaction.add(R.id.fragment_container_list, currentFragmet).commit();
     }
 
     @Override
@@ -190,6 +200,7 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
         if (o instanceof Data) {
             Data data = (Data) o;
             currentFragmet.updateView(data.getNodes());
+            Toast.makeText(this, data.getNodes().size()+"", Toast.LENGTH_SHORT).show();
         }
     }
 }

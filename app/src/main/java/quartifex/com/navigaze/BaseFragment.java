@@ -41,4 +41,11 @@ public abstract class BaseFragment extends Fragment {
 
 	public <k extends Object> void updateView(List<k> objects){}
 
+	public interface FragmentActionListener {
+		void onActionClick(String tag);
+		void onBackAction();
+	}
+
+	public void idleClick(View v) {}
+
 }

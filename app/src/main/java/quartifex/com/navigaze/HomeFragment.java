@@ -32,7 +32,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
 
 	View rootView;
-	private OnFragmentInteractionListener mListener;
 	private int timeConstant = 5;
 
 
@@ -60,10 +59,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
 	public HomeFragment() {
 		// Required empty public constructor
-	}
-
-	public interface HomeActionListener {
-		void onActionClick(String tag);
 	}
 
 	public static HomeFragment newInstance() {
@@ -138,28 +133,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 	}
 
 
-	// TODO: Rename method, update argument and hook method into UI event
-	public void onButtonPressed(Uri uri) {
-		if (mListener != null) {
-			mListener.onFragmentInteraction(uri);
-		}
-	}
-
 	@Override
 	public void onAttach(Context context) {
 		super.onAttach(context);
-		if (context instanceof OnFragmentInteractionListener) {
-			mListener = (OnFragmentInteractionListener) context;
-		} else {
-			throw new RuntimeException(context.toString()
-					+ " must implement OnFragmentInteractionListener");
-		}
 	}
 
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		mListener = null;
 	}
 
 	@Override
