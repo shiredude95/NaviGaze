@@ -1,8 +1,11 @@
 package quartifex.com.navigaze;
 
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.util.Log;
 import android.widget.TextView;
@@ -12,10 +15,12 @@ import com.google.android.gms.vision.face.Face;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import quartifex.com.navigaze.face.FaceDetectorActivity;
+import quartifex.com.navigaze.news.NewsFragment;
 
 public class FaceActivity extends AppCompatActivity implements FaceDetectorActivity.FaceListener,HomeFragment.OnFragmentInteractionListener {
 
@@ -29,12 +34,30 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
 	private float MIN_PROBABILITY_THRESHOLD = 0.2f;
 
 
-	HomeFragment homeFragment;
+	NewsFragment homeFragment;
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		ActionBar actionbar = getSupportActionBar();
+		actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorActionBar)));
+
+
+		Window window = getWindow();
+
+		// clear FLAG_TRANSLUCENT_STATUS flag:
+		window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+			// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+		window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+		// finally change the color
+		window.setStatusBarColor(getResources().getColor(android.R.color.black));
+
 		leftEyeOpenProbs = new ArrayList<>();
 		rightEyeOpenProbs = new ArrayList<>();
 		displayFragment();
@@ -43,8 +66,13 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
 
 	}
 
+	@Override
+	public void onBackPressed() {
+//		super.onBackPressed();
+	}
+
 	public void displayFragment(){
-		homeFragment = HomeFragment.newInstance();
+		homeFragment = NewsFragment.newInstance();
 		FragmentManager fragmentManager=getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		fragmentTransaction.add(R.id.fragment_container_list,homeFragment).addToBackStack(null).commit();
@@ -52,7 +80,7 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
 
 	public void closeFragment(){
 		FragmentManager fragmentManager = getSupportFragmentManager();
-		homeFragment = (HomeFragment)fragmentManager.findFragmentById(R.id.fragment_container_list);
+		homeFragment = (NewsFragment) fragmentManager.findFragmentById(R.id.fragment_container_list);
 		if(homeFragment!=null){
 			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 			fragmentTransaction.remove(homeFragment);

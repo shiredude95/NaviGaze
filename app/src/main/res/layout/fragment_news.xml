@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_news_fragment_container"
+    android:divider="?android:attr/listDivider"
+    android:orientation="vertical"
+    android:showDividers="middle"
+    tools:context=".HomeFragment">
+
+    <com.yuyakaido.android.cardstackview.CardStackView
+        android:id="@+id/card_stack_view"
+        android:layout_width="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_above="@id/control_content_divider"
+        android:layout_height="match_parent">
+    </com.yuyakaido.android.cardstackview.CardStackView>
+
+
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/ll_news_control_container">
+
+
+        <Button
+            android:id="@+id/button_idle_news"
+            android:layout_width="0dp"
+            android:layout_height="?android:attr/listPreferredItemHeight"
+            android:background="@color/colorAccent"
+            android:text="Read"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/ps_bld"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:textSize="24sp" />
+
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="?android:attr/listPreferredItemHeight"
+            android:background="@android:color/darker_gray"/>
+
+
+        <quartifex.com.navigaze.FunButton
+            android:id="@+id/button_right_news"
+            android:layout_width="0dp"
+            android:layout_height="?android:attr/listPreferredItemHeight"
+            android:background="?android:selectableItemBackground"
+            android:gravity="center"
+            android:paddingStart="50dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            custom:buttonText="Next" />
+
+
+    </LinearLayout>
+
+
+
+    <View
+        android:id="@+id/control_content_divider"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@android:color/darker_gray"
+        android:layout_alignTop="@id/ll_news_control_container"/>
+
+
+
+
+</RelativeLayout>
