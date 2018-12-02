@@ -2,10 +2,9 @@ package quartifex.com.navigaze;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.FrameLayout;
 import android.util.Log;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.vision.face.Face;
 
@@ -15,60 +14,65 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import quartifex.com.navigaze.HttpWrapper.Network;
+import quartifex.com.navigaze.POJO.Data;
 import quartifex.com.navigaze.face.FaceDetectorActivity;
-
-public class FaceActivity extends AppCompatActivity implements FaceDetectorActivity.FaceListener,HomeFragment.OnFragmentInteractionListener {
-
-
-	private List<Float> leftEyeOpenProbs;
-	private List<Float> rightEyeOpenProbs;
-	private int FPS = 10;
-	private int LEFT_EYE_OPEN_FLAG = 0;
-	private int RIGHT_EYE_OPEN_FLAG = 1;
-	private int BOTH_EYE_CLOSED = 2;
-	private int NO_ACTION_FLAG = 3;
-	private float MIN_PROBABILITY_THRESHOLD = 0.2f;
-	private int currentAction = -1;
-	private int prevAction = -1;
-
-	HomeFragment homeFragment;
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		leftEyeOpenProbs = new ArrayList<>();
-		rightEyeOpenProbs = new ArrayList<>();
-		displayFragment();
-	}
-
-	public void displayFragment(){
-		homeFragment = HomeFragment.newInstance();
-		FragmentManager fragmentManager=getSupportFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		fragmentTransaction.add(R.id.fragment_container_list,homeFragment).addToBackStack(null).commit();
-	}
-
-	public void closeFragment(){
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		homeFragment = (HomeFragment)fragmentManager.findFragmentById(R.id.fragment_container_list);
-		if(homeFragment!=null){
-			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-			fragmentTransaction.remove(homeFragment);
-		}
-	}
+import quartifex.com.navigaze.features.NearbyFragment;
 
 
 
-	@Override
-	public void getFace(Face face) {
-		if (leftEyeOpenProbs.size() < FPS) {
-			leftEyeOpenProbs.add(face.getIsLeftEyeOpenProbability());
-			rightEyeOpenProbs.add(face.getIsRightEyeOpenProbability());
-		}else {
-			if (getAction(leftEyeOpenProbs, rightEyeOpenProbs) == LEFT_EYE_OPEN_FLAG) {
-				updateCurrentPreviousFunction(LEFT_EYE_OPEN_FLAG);
-			}else if (getAction(leftEyeOpenProbs, rightEyeOpenProbs) == RIGHT_EYE_OPEN_FLAG) {
+public class FaceActivity extends AppCompatActivity implements FaceDetectorActivity.FaceListener, HomeFragment.OnFragmentInteractionListener, Network.NetworkListener, HomeFragment.HomeActionListener {
+
+    private List<Float> leftEyeOpenProbs;
+    private List<Float> rightEyeOpenProbs;
+    private int FPS = 10;
+    private int LEFT_EYE_OPEN_FLAG = 0;
+    private int RIGHT_EYE_OPEN_FLAG = 1;
+    private int BOTH_EYE_CLOSED = 2;
+    private int NO_ACTION_FLAG = 3;
+    private float MIN_PROBABILITY_THRESHOLD = 0.2f;
+    private int currentAction = -1;
+    private int prevAction = -1;
+
+    HomeFragment homeFragment;
+    private BaseFragment currentFragmet;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        leftEyeOpenProbs = new ArrayList<>();
+        rightEyeOpenProbs = new ArrayList<>();
+        displayFragment();
+
+    }
+
+    public void displayFragment() {
+        homeFragment = HomeFragment.newInstance();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container_list, homeFragment).addToBackStack(null).commit();
+    }
+
+    public void closeFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        homeFragment = (HomeFragment) fragmentManager.findFragmentById(R.id.fragment_container_list);
+        if (homeFragment != null) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.remove(homeFragment);
+        }
+    }
+
+
+    @Override
+    public void getFace(Face face) {
+        if (leftEyeOpenProbs.size() < FPS) {
+            leftEyeOpenProbs.add(face.getIsLeftEyeOpenProbability());
+            rightEyeOpenProbs.add(face.getIsRightEyeOpenProbability());
+        } else {
+            if (getAction(leftEyeOpenProbs, rightEyeOpenProbs) == LEFT_EYE_OPEN_FLAG) {
+                updateCurrentPreviousFunction(LEFT_EYE_OPEN_FLAG);
+            } else if (getAction(leftEyeOpenProbs, rightEyeOpenProbs) == RIGHT_EYE_OPEN_FLAG) {
                 updateCurrentPreviousFunction(RIGHT_EYE_OPEN_FLAG);
 			} else if (getAction(leftEyeOpenProbs,rightEyeOpenProbs) == BOTH_EYE_CLOSED) {
 			    updateCurrentPreviousFunction(BOTH_EYE_CLOSED);
@@ -76,17 +80,17 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
 			else {
 			    updateCurrentPreviousFunction(NO_ACTION_FLAG);
             }
-			leftEyeOpenProbs.clear();
-			rightEyeOpenProbs.clear();
-		}
-	}
+            leftEyeOpenProbs.clear();
+            rightEyeOpenProbs.clear();
+        }
+    }
 
-	private void updateCurrentPreviousFunction (int forAction) {
-	    currentAction = forAction;
-        Log.d("Action update", "updateCurrentPreviousFunction:: current action::"+currentAction
-                +"previous action::"+prevAction);
-	    if (currentAction != prevAction) {
-	        if (currentAction == LEFT_EYE_OPEN_FLAG) {
+    private void updateCurrentPreviousFunction(int forAction) {
+        currentAction = forAction;
+        Log.d("Action update", "updateCurrentPreviousFunction:: current action::" + currentAction
+                + "previous action::" + prevAction);
+        if (currentAction != prevAction) {
+            if (currentAction == LEFT_EYE_OPEN_FLAG) {
                 homeFragment.handleRightBlink();
             } else if (currentAction == RIGHT_EYE_OPEN_FLAG) {
                 homeFragment.handleLeftBlink();
@@ -95,7 +99,7 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
             } else {
                 // NO ACTION
             }
-        }else {
+        } else {
             return;
         }
         prevAction = currentAction;
@@ -130,10 +134,20 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
 		}
 	}
 
-	private boolean isFirstEyeOpen (float firstEyeProb, float secondEyeProb) {
-		Log.d("FACE DETECTIOn", "getAction: secondEYEProb ::"+secondEyeProb);
-		return firstEyeProb >= (2 * secondEyeProb) && (firstEyeProb >= MIN_PROBABILITY_THRESHOLD);
-	}
+
+    private boolean isFirstEyeOpen(float firstEyeProb, float secondEyeProb) {
+        Log.d("FACE DETECTIOn", "getAction: secondEYEProb ::" + secondEyeProb);
+        return firstEyeProb >= (2 * secondEyeProb) && (firstEyeProb >= MIN_PROBABILITY_THRESHOLD);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    public void idleClick(View v) {
+        homeFragment.idleClick(v);
+    }
 
     private boolean isBothEyeClosed (float firstEyeProb, float secondEyeProb) {
         Log.d("FACE DETECTIOn closed", "getAction: secondEYEProb ::"+secondEyeProb+"first-->"+firstEyeProb);
@@ -144,12 +158,38 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
 	    return count > FPS * 0.6;
     }
 
-	@Override
-	public void onFragmentInteraction(Uri uri) {
 
-	}
+    @Override
+    public void onActionClick(String action) {
+        Toast.makeText(this, action, Toast.LENGTH_LONG).show();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-	public void idleClick(View v) {
-		homeFragment.idleClick(v);
-	}
+        switch (action) {
+            case HomeFragment.SPEED_DIAL:
+                break;
+            case HomeFragment.SOS:
+                break;
+            case HomeFragment.MEDIA:
+                break;
+            case HomeFragment.MESSAGE:
+                break;
+            case HomeFragment.NEARBY:
+                currentFragmet = new NearbyFragment();
+                break;
+            case HomeFragment.SMART_HOME:
+                break;
+        }
+
+
+        fragmentTransaction.add(R.id.fragment_container_list, currentFragmet).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onNetworkResultReceive(Object o) {
+        if (o instanceof Data) {
+            Data data = (Data) o;
+            currentFragmet.updateView(data.getNodes());
+        }
+    }
 }

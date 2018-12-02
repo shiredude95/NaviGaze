@@ -4,6 +4,8 @@ package quartifex.com.navigaze.POJO;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import androidx.annotation.NonNull;
+
 public class Node {
 
     @SerializedName("id")
@@ -161,4 +163,9 @@ public class Node {
         this.name = name;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return getId() + " " + getName() + " " + getCategory();
+    }
 }
