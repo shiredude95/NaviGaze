@@ -32,7 +32,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
 
     View rootView;
-    private int timeConstant = 1;
+    private int timeConstant = 5;
 
 
     private boolean isCountdownRunning = false;
