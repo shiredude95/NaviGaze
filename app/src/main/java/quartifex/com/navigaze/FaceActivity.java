@@ -278,6 +278,13 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.remove(currentFragmet);
         currentFragmet = homeFragment;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                getSupportActionBar().setTitle("Home");
+            }
+        });
+
         fragmentTransaction.add(R.id.fragment_container_list, currentFragmet).commit();
     }
 
