@@ -1,73 +1,56 @@
 package quartifex.com.navigaze.features;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
+
 import android.os.CountDownTimer;
-import android.os.Looper;
-import android.util.Log;
+import android.speech.tts.TextToSpeech;
+import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import quartifex.com.navigaze.BaseFragment;
 import quartifex.com.navigaze.FaceActivity;
 import quartifex.com.navigaze.FunButton;
-import quartifex.com.navigaze.HomeFragment;
-import quartifex.com.navigaze.HttpWrapper.Network;
-import quartifex.com.navigaze.POJO.Data;
-import quartifex.com.navigaze.POJO.Node;
 import quartifex.com.navigaze.R;
 
-public class NearbyFragment extends BaseFragment implements View.OnClickListener {
-
-
-    // TODO: Rename parameter arguments, choose names that match
-
+public class SmartHomeFragment extends BaseFragment implements View.OnClickListener {
 
     View rootView;
     private int timeConstant = 5;
 
-
     private boolean isCountdownRunning = false;
 
-    private FunButton btnSpeedDial;
-    private FunButton btnSOS;
-    private FunButton btnSmartHome;
-    private FunButton btnNearby;
-    private FunButton btnMedia;
-    //    private FunButton btnMessage;
-    private LinearLayout linearLayout;
+    private FunButton btnsh1;
+    private FunButton btnsh2;
+    private FunButton btnsh3;
+    private FunButton btnsh4;
+    private FunButton btnsh5;
+
+    TextToSpeech t1;
+    public static final String TURN_ON = "Turn on the lights";
+    public static final String TURN_OFF = "Turn off the lights";
+    public static final String INIT_STRING = "Ok google, talk to Navigaze helper.";
 
     private List<View> btnList = new ArrayList<>();
     private CountDownTimer mCountDownTimer;
 
-    public static final String SPEED_DIAL = "speed_dial";
-    public static final String SOS = "sos";
-    public static final String SMART_HOME = "smart_home";
-    public static final String MEDIA = "media";
-    public static final String MESSAGE = "message";
-    public static final String NEARBY = "nearby";
-
-
     private int currentItemIndex = 0;
 
-    public NearbyFragment() {
+    public SmartHomeFragment() {
         // Required empty public constructor
     }
 
-    public static NearbyFragment newInstance() {
-        return new NearbyFragment();
+    public static SmartHomeFragment newInstance() {
+        return new SmartHomeFragment();
     }
 
     private void incrementcurrentItemIndex() {
@@ -89,24 +72,27 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public View customFeatureFragment(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_nearby, parent, false);
+        rootView = inflater.inflate(R.layout.fragment_smart_home, parent, false);
 
-        String url = "http://wheelmap.org/api/nodes?api_key=-DFwtnoyB15aUuEvHq1d&bbox=13.341,52.505,13.434,52.523&per_page=10&wheelchair=yes";
-        new Network(getContext(), Data.class).execute(url);
+        btnsh1 = rootView.findViewById(R.id.button_sh1);
+        btnsh2 = rootView.findViewById(R.id.button_sh2);
+        btnsh3 = rootView.findViewById(R.id.button_sh3);
+        btnsh4 = rootView.findViewById(R.id.button_sh4);
+        btnsh5 = rootView.findViewById(R.id.button_sh5);
 
-        btnSpeedDial = rootView.findViewById(R.id.button_speed_dial);
-        btnSOS = rootView.findViewById(R.id.button_sos);
-        btnSmartHome = rootView.findViewById(R.id.button_smart_home);
-        btnNearby = rootView.findViewById(R.id.button_nearby);
-        btnMedia = rootView.findViewById(R.id.button_media);
-//        btnMessage = rootView.findViewById(R.id.button_messages);
-        linearLayout = rootView.findViewById(R.id.ll_nearby_fragment_container);
-        linearLayout.setVisibility(View.INVISIBLE);
-
-
-        getAllViewsInList(rootView.findViewById(R.id.ll_nearby_fragment_container));
+        getAllViewsInList(rootView.findViewById(R.id.ll_message_fragment_container));
         setAllViewsOnClickListener();
 
+        t1=new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    t1.setLanguage(Locale.UK);
+                    t1.setSpeechRate(0.7f);
+                    t1.speak(INIT_STRING, TextToSpeech.QUEUE_FLUSH, null);
+                }
+            }
+        });
 
         //Now specific components here (you can initialize Buttons etc)
         return rootView;
@@ -134,7 +120,7 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void handleBothOpenOrClose() {
-        ((FaceActivity) getActivity()).onBackAction();
+        ((FaceActivity)getActivity()).onBackAction();
     }
 
     @Override
@@ -150,24 +136,21 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button_speed_dial:
-                uiCallToCountDown(btnSpeedDial, SPEED_DIAL);
+            case R.id.button_sh1:
+                sendMessage(btnsh1);
                 break;
-            case R.id.button_sos:
-                uiCallToCountDown(btnSOS, SOS);
+            case R.id.button_sh2:
+                sendMessage(btnsh2);
                 break;
-            case R.id.button_smart_home:
-                uiCallToCountDown(btnSmartHome, SMART_HOME);
+            case R.id.button_sh3:
+                sendMessage(btnsh3);
                 break;
-            case R.id.button_nearby:
-                uiCallToCountDown(btnNearby, NEARBY);
+            case R.id.button_sh4:
+                sendMessage(btnsh4);
                 break;
-            case R.id.button_media:
-                uiCallToCountDown(btnMedia, MEDIA);
+            case R.id.button_sh5:
+                sendMessage(btnsh5);
                 break;
-//            case R.id.button_messages:
-//                uiCallToCountDown(btnMessage, MESSAGE);
-//                break;
             case -1:
                 idleClickNoTouch(v);
                 break;
@@ -177,8 +160,7 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
-
-    private void uiCallToCountDown(final FunButton button, final String action) {
+    private void sendMessage(final FunButton button) {
 
         getActivity().runOnUiThread(new Runnable() {
 
@@ -216,8 +198,7 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
                         button.setProgressbarProgress(100);
                         button.setProgressBarVisibility(false);
                         isCountdownRunning = false;
-                        //TODO action
-
+                        t1.speak(button.getButtonText(), TextToSpeech.QUEUE_FLUSH, null);
                     }
                 };
                 mCountDownTimer.start();
@@ -225,9 +206,19 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
 
 
         });
+
     }
 
-    private void flushButtonColorsOnIdle(@Nullable View v) {
+
+    public void onPause(){
+        if(t1 !=null){
+            t1.stop();
+            t1.shutdown();
+        }
+        super.onPause();
+    }
+
+    private void flushButtonColorsOnIdle(@Nullable View v){
         if (isCountdownRunning && mCountDownTimer != null) {
             isCountdownRunning = false;
             mCountDownTimer.cancel();
@@ -236,16 +227,13 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
             }
         }
         for (View v1 : btnList) {
-            if (!(v1 instanceof FunButton))
-                v1.setBackgroundColor(getResources().getColor(android.R.color.white));
+            if (!(v1 instanceof FunButton)) v1.setBackgroundColor(getResources().getColor(android.R.color.white));
         }
-        if (v != null) v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        if(v!=null) v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
     }
 
     //handle idle clicks
-    public void idleClick(View v) {
-        flushButtonColorsOnIdle(v);
-    }
+    public void idleClick(View v) {flushButtonColorsOnIdle(v);}
 
     private void idleClickNoTouch(final View v) {
 
@@ -289,27 +277,6 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
             View v1 = viewGroup.getChildAt(i);
             btnList.add(v1);
         }
-    }
-
-    @Override
-    public <k> void updateView(List<k> nodes) {
-        try {
-            btnSpeedDial.setFunButtonText(getTextValue(((Node) nodes.get(0))));
-            btnSOS.setFunButtonText(getTextValue(((Node) nodes.get(1))));
-            btnSmartHome.setFunButtonText(getTextValue(((Node) nodes.get(2))));
-            btnNearby.setFunButtonText(getTextValue(((Node) nodes.get(4))));
-            btnMedia.setFunButtonText(getTextValue(((Node) nodes.get(5))));
-//            btnMessage.setFunButtonText(((Node) nodes.get(5)).getName());
-            linearLayout.setVisibility(View.VISIBLE);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private String getTextValue(Node node) {
-        String value = node.getName();
-        value += "\n" + node.getCategory().getIdentifier().replaceAll("_", " ") + ", " + node.getNodeType().getIdentifier().replaceAll("_", " ");
-        return value;
     }
 
 }

@@ -72,9 +72,6 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     public View customFeatureFragment(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_message, parent, false);
 
-        String url = "http://wheelmap.org/api/nodes?api_key=-DFwtnoyB15aUuEvHq1d&bbox=13.341,52.505,13.434,52.523&per_page=10&wheelchair=yes";
-        new Network(getContext(), Data.class).execute(url);
-
         btnh1 = rootView.findViewById(R.id.button_h1);
         btnh2 = rootView.findViewById(R.id.button_h2);
         btnh3 = rootView.findViewById(R.id.button_h3);

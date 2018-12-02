@@ -3,19 +3,27 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/ll_nearby_fragment_container"
+    android:id="@+id/ll_message_fragment_container"
     android:divider="?android:attr/listDivider"
     android:orientation="vertical"
     android:showDividers="middle"
-    tools:context="features.NearbyFragment"
+    tools:context="features.SmartHomeFragment"
     android:background="@android:color/white">
 
 
-    <ProgressBar
-        android:id="@+id/progress_circular"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:onClick="idleClick"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <quartifex.com.navigaze.FunButton
+        android:id="@+id/button_sh1"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:background="?android:selectableItemBackground"
+        custom:buttonText="Turn On Lights"/>
 
     <View
         android:layout_width="match_parent"
@@ -25,25 +33,11 @@
         android:focusable="true" />
 
     <quartifex.com.navigaze.FunButton
-        android:id="@+id/button_speed_dial"
+        android:id="@+id/button_sh2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?android:attr/listPreferredItemHeight"
         android:background="?android:selectableItemBackground"
-        custom:buttonText="Speed Dial"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:onClick="idleClick"
-        android:clickable="true"
-        android:focusable="true" />
-
-    <quartifex.com.navigaze.FunButton
-        android:id="@+id/button_sos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:selectableItemBackground"
-        custom:buttonText="SOS"
+        custom:buttonText="Turn Off Lights"
         android:clickable="true"
         android:focusable="true"/>
 
@@ -56,11 +50,11 @@
         android:focusable="true"/>
 
     <quartifex.com.navigaze.FunButton
-        android:id="@+id/button_smart_home"
+        android:id="@+id/button_sh3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?android:attr/listPreferredItemHeight"
         android:background="?android:selectableItemBackground"
-        custom:buttonText="Smart Home"
+        custom:buttonText="What's the weather outside?"
         android:clickable="true"
         android:focusable="true"/>
 
@@ -72,11 +66,11 @@
         android:focusable="true"/>
 
     <quartifex.com.navigaze.FunButton
-        android:id="@+id/button_nearby"
+        android:id="@+id/button_sh4"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?android:attr/listPreferredItemHeight"
         android:background="?android:selectableItemBackground"
-        custom:buttonText="Nearby"/>
+        custom:buttonText="Turn On the TV"/>
 
     <View
         android:layout_width="match_parent"
@@ -86,12 +80,11 @@
         android:focusable="true"/>
 
     <quartifex.com.navigaze.FunButton
-        android:id="@+id/button_media"
+        android:id="@+id/button_sh5"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?android:attr/listPreferredItemHeight"
         android:background="?android:selectableItemBackground"
-        custom:buttonText="Media"/>
-
+        custom:buttonText="Turn Off the TV"/>
 
     <View
         android:layout_width="match_parent"
@@ -99,19 +92,5 @@
         android:onClick="idleClick"
         android:clickable="true"
         android:focusable="true"/>
-
-    <!--<quartifex.com.navigaze.FunButton-->
-        <!--android:id="@+id/button_messages"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="?android:attr/listPreferredItemHeight"-->
-        <!--android:background="?android:selectableItemBackground"-->
-        <!--custom:buttonText="Message"/>-->
-
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="25dp"-->
-        <!--android:onClick="idleClick"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true"/>-->
 
 </LinearLayout>
