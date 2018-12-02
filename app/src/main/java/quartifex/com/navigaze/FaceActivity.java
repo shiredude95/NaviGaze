@@ -182,9 +182,11 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
             case HomeFragment.MEDIA:
                 break;
             case HomeFragment.MESSAGE:
+                getSupportActionBar().setTitle("Send Message");
                 currentFragmet = new MessageFragment();
                 break;
             case HomeFragment.NEARBY:
+                getSupportActionBar().setTitle("Accessible Places");
                 currentFragmet = new NearbyFragment();
                 break;
             case HomeFragment.SMART_HOME:
