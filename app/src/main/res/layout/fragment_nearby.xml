@@ -10,12 +10,19 @@
     tools:context="features.NearbyFragment"
     android:background="@android:color/white">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:onClick="idleClick"
+        android:clickable="true"
+        android:focusable="true" />
 
-    <ProgressBar
-        android:id="@+id/progress_circular"
-        android:layout_width="wrap_content"
+    <quartifex.com.navigaze.FunButton
+        android:id="@+id/button_p1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:background="?android:selectableItemBackground"
+        custom:buttonText="p1"/>
 
     <View
         android:layout_width="match_parent"
@@ -25,25 +32,11 @@
         android:focusable="true" />
 
     <quartifex.com.navigaze.FunButton
-        android:id="@+id/button_speed_dial"
+        android:id="@+id/button_p2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:selectableItemBackground"
-        custom:buttonText="Speed Dial"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:onClick="idleClick"
-        android:clickable="true"
-        android:focusable="true" />
-
-    <quartifex.com.navigaze.FunButton
-        android:id="@+id/button_sos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:selectableItemBackground"
-        custom:buttonText="SOS"
+        custom:buttonText="p2"
         android:clickable="true"
         android:focusable="true"/>
 
@@ -56,11 +49,11 @@
         android:focusable="true"/>
 
     <quartifex.com.navigaze.FunButton
-        android:id="@+id/button_smart_home"
+        android:id="@+id/button_p3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:selectableItemBackground"
-        custom:buttonText="Smart Home"
+        custom:buttonText="p3"
         android:clickable="true"
         android:focusable="true"/>
 
@@ -72,11 +65,11 @@
         android:focusable="true"/>
 
     <quartifex.com.navigaze.FunButton
-        android:id="@+id/button_nearby"
+        android:id="@+id/button_p4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:selectableItemBackground"
-        custom:buttonText="Nearby"/>
+        custom:buttonText="p4"/>
 
     <View
         android:layout_width="match_parent"
@@ -86,11 +79,11 @@
         android:focusable="true"/>
 
     <quartifex.com.navigaze.FunButton
-        android:id="@+id/button_media"
+        android:id="@+id/button_p5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:selectableItemBackground"
-        custom:buttonText="Media"/>
+        custom:buttonText="p5"/>
 
 
     <View

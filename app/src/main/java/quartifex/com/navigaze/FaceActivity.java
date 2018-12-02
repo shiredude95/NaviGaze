@@ -27,6 +27,7 @@ import quartifex.com.navigaze.face.FaceDetectorActivity;
 import quartifex.com.navigaze.features.MessageFragment;
 import quartifex.com.navigaze.features.NearbyFragment;
 import quartifex.com.navigaze.features.SmartHomeFragment;
+import quartifex.com.navigaze.features.news.NewsFragment;
 
 
 public class FaceActivity extends AppCompatActivity implements FaceDetectorActivity.FaceListener, HomeFragment.OnFragmentInteractionListener, Network.NetworkListener, BaseFragment.FragmentActionListener {
@@ -174,12 +175,11 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         switch (action) {
-            case HomeFragment.SPEED_DIAL:
-                break;
             case HomeFragment.SOS:
                 senSOS();
                 break;
             case HomeFragment.MEDIA:
+                currentFragmet = new NewsFragment();
                 break;
             case HomeFragment.MESSAGE:
                 currentFragmet = new MessageFragment();

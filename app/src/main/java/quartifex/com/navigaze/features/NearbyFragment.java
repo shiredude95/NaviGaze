@@ -41,23 +41,23 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
 
     private boolean isCountdownRunning = false;
 
-    private FunButton btnSpeedDial;
-    private FunButton btnSOS;
-    private FunButton btnSmartHome;
-    private FunButton btnNearby;
-    private FunButton btnMedia;
+    private FunButton btnn1;
+    private FunButton btnn2;
+    private FunButton btnn3;
+    private FunButton btnn4;
+    private FunButton btnn5;
     //    private FunButton btnMessage;
     private LinearLayout linearLayout;
 
     private List<View> btnList = new ArrayList<>();
     private CountDownTimer mCountDownTimer;
 
-    public static final String SPEED_DIAL = "speed_dial";
-    public static final String SOS = "sos";
-    public static final String SMART_HOME = "smart_home";
-    public static final String MEDIA = "media";
-    public static final String MESSAGE = "message";
-    public static final String NEARBY = "nearby";
+    public static final String P1 = "p1";
+    public static final String P2 = "p2";
+    public static final String P3 = "p3";
+    public static final String P4 = "p4";
+    public static final String P5 = "p5";
+    public static final String P6 = "p6";
 
 
     private int currentItemIndex = 0;
@@ -94,11 +94,11 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
         String url = "http://wheelmap.org/api/nodes?api_key=-DFwtnoyB15aUuEvHq1d&bbox=13.341,52.505,13.434,52.523&per_page=10&wheelchair=yes";
         new Network(getContext(), Data.class).execute(url);
 
-        btnSpeedDial = rootView.findViewById(R.id.button_speed_dial);
-        btnSOS = rootView.findViewById(R.id.button_sos);
-        btnSmartHome = rootView.findViewById(R.id.button_smart_home);
-        btnNearby = rootView.findViewById(R.id.button_nearby);
-        btnMedia = rootView.findViewById(R.id.button_media);
+        btnn1 = rootView.findViewById(R.id.button_p1);
+        btnn2 = rootView.findViewById(R.id.button_p2);
+        btnn3 = rootView.findViewById(R.id.button_p3);
+        btnn4 = rootView.findViewById(R.id.button_p4);
+        btnn5 = rootView.findViewById(R.id.button_p5);
 //        btnMessage = rootView.findViewById(R.id.button_messages);
         linearLayout = rootView.findViewById(R.id.ll_nearby_fragment_container);
         linearLayout.setVisibility(View.INVISIBLE);
@@ -150,20 +150,20 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button_speed_dial:
-                uiCallToCountDown(btnSpeedDial, SPEED_DIAL);
+            case R.id.button_p1:
+                uiCallToCountDown(btnn1, P1);
                 break;
-            case R.id.button_sos:
-                uiCallToCountDown(btnSOS, SOS);
+            case R.id.button_p2:
+                uiCallToCountDown(btnn2, P2);
                 break;
-            case R.id.button_smart_home:
-                uiCallToCountDown(btnSmartHome, SMART_HOME);
+            case R.id.button_p3:
+                uiCallToCountDown(btnn3, P3);
                 break;
-            case R.id.button_nearby:
-                uiCallToCountDown(btnNearby, NEARBY);
+            case R.id.button_p4:
+                uiCallToCountDown(btnn4, P4);
                 break;
-            case R.id.button_media:
-                uiCallToCountDown(btnMedia, MEDIA);
+            case R.id.button_p5:
+                uiCallToCountDown(btnn5, P5);
                 break;
 //            case R.id.button_messages:
 //                uiCallToCountDown(btnMessage, MESSAGE);
@@ -294,11 +294,11 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
     @Override
     public <k> void updateView(List<k> nodes) {
         try {
-            btnSpeedDial.setFunButtonText(getTextValue(((Node) nodes.get(0))));
-            btnSOS.setFunButtonText(getTextValue(((Node) nodes.get(1))));
-            btnSmartHome.setFunButtonText(getTextValue(((Node) nodes.get(2))));
-            btnNearby.setFunButtonText(getTextValue(((Node) nodes.get(4))));
-            btnMedia.setFunButtonText(getTextValue(((Node) nodes.get(5))));
+            btnn1.setFunButtonText(getTextValue(((Node) nodes.get(0))));
+            btnn2.setFunButtonText(getTextValue(((Node) nodes.get(1))));
+            btnn3.setFunButtonText(getTextValue(((Node) nodes.get(2))));
+            btnn4.setFunButtonText(getTextValue(((Node) nodes.get(4))));
+            btnn5.setFunButtonText(getTextValue(((Node) nodes.get(5))));
 //            btnMessage.setFunButtonText(((Node) nodes.get(5)).getName());
             linearLayout.setVisibility(View.VISIBLE);
         } catch (Exception e) {

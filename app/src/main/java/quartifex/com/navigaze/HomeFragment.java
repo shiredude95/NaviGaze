@@ -37,7 +37,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     private boolean isCountdownRunning = false;
 
-    private FunButton btnSpeedDial;
     private FunButton btnSOS;
     private FunButton btnSmartHome;
     private FunButton btnNearby;
@@ -91,7 +90,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         rootView = inflater.inflate(R.layout.fragment_home, parent, false);
 
 
-        btnSpeedDial = rootView.findViewById(R.id.button_speed_dial);
         btnSOS = rootView.findViewById(R.id.button_sos);
         btnSmartHome = rootView.findViewById(R.id.button_smart_home);
         btnNearby = rootView.findViewById(R.id.button_nearby);
@@ -146,9 +144,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button_speed_dial:
-                uiCallToCountDown(btnSpeedDial, SPEED_DIAL);
-                break;
             case R.id.button_sos:
                 uiCallToCountDown(btnSOS, SOS);
                 break;
