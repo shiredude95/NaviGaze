@@ -36,6 +36,6 @@ public abstract class BaseFragment extends Fragment {
 
 	public abstract void handleBothOpenOrClose();
 
-	public void getAllViewsInList(View v){}
+	public abstract void getAllViewsInList(View v);
 
 }

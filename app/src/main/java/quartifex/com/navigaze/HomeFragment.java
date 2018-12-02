@@ -123,7 +123,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
 	@Override
 	public void handleBothOpenOrClose() {
-
+	    
+		Log.d("CLOSED EYES", "handleBothOpenOrClose: CLOSSSSSEEE!!!!");
 	}
 
 
