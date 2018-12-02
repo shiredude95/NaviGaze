@@ -1,7 +1,6 @@
 package quartifex.com.navigaze;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -47,11 +46,22 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 	private List<View> btnList = new ArrayList<>();
 	private CountDownTimer mCountDownTimer;
 
+	public static final String SPEED_DIAL = "speed_dial";
+	public static final String SOS = "sos";
+	public static final String SMART_HOME = "smart_home";
+	public static final String MEDIA = "media";
+	public static final String MESSAGE = "message";
+	public static final String NEARBY = "nearby";
+
 
 	private int currentItemIndex = 0;
 
 	public HomeFragment() {
 		// Required empty public constructor
+	}
+
+	public interface HomeActionListener {
+		void onActionClick(String tag);
 	}
 
 	public static HomeFragment newInstance() {
@@ -149,22 +159,22 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.button_speed_dial:
-				uiCallToCountDown(btnSpeedDial, new Intent(Intent.ACTION_CALL));
+				uiCallToCountDown(btnSpeedDial, SPEED_DIAL);
 				break;
 			case R.id.button_sos:
-				uiCallToCountDown(btnSOS, new Intent(Intent.ACTION_CALL));
+				uiCallToCountDown(btnSOS, SOS);
 				break;
 			case R.id.button_smart_home:
-				uiCallToCountDown(btnSmartHome, new Intent(Intent.ACTION_CALL));
+				uiCallToCountDown(btnSmartHome, SMART_HOME);
 				break;
 			case R.id.button_nearby:
-				uiCallToCountDown(btnNearby, new Intent(Intent.ACTION_CALL));
+				uiCallToCountDown(btnNearby, NEARBY);
 				break;
 			case R.id.button_media:
-				uiCallToCountDown(btnMedia, new Intent(Intent.ACTION_CALL));
+				uiCallToCountDown(btnMedia, MEDIA);
 				break;
 			case R.id.button_messages:
-				uiCallToCountDown(btnMessage, new Intent(Intent.ACTION_CALL));
+				uiCallToCountDown(btnMessage, MESSAGE);
 				break;
 			case -1:
 				idleClickNoTouch(v);
@@ -176,7 +186,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 	}
 
 
-	private void uiCallToCountDown(final FunButton button, Intent i) {
+	private void uiCallToCountDown(final FunButton button, final String action) {
 
 		getActivity().runOnUiThread(new Runnable() {
 
@@ -188,7 +198,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 					isCountdownRunning = false;
 					mCountDownTimer.cancel();
 					for (View v1 : btnList) {
-
 						if (v1 instanceof FunButton) ((FunButton) v1).setProgressBarVisibility(false);
 
 					}
@@ -213,9 +222,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 					@Override
 					public void onFinish() {
 						button.setProgressbarProgress(100);
-						Toast.makeText(getActivity(), button.getButtonText(), Toast.LENGTH_LONG).show();
 						button.setProgressBarVisibility(false);
 						isCountdownRunning = false;
+						((FaceActivity)getActivity()).onActionClick(action);
 					}
 				};
 				mCountDownTimer.start();

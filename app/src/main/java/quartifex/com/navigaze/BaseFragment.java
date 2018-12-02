@@ -11,6 +11,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import quartifex.com.navigaze.POJO.Node;
 
 public abstract class BaseFragment extends Fragment {
 
@@ -37,5 +38,7 @@ public abstract class BaseFragment extends Fragment {
 	public abstract void handleBothOpenOrClose();
 
 	public void getAllViewsInList(View v){}
+
+	public <k extends Object> void updateView(List<k> objects){}
 
 }
