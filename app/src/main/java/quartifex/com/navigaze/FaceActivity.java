@@ -1,9 +1,14 @@
 package quartifex.com.navigaze;
 
+import android.Manifest;
+import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.face.Face;
@@ -11,14 +16,15 @@ import com.google.android.gms.vision.face.Face;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import quartifex.com.navigaze.HttpWrapper.Network;
 import quartifex.com.navigaze.POJO.Data;
 import quartifex.com.navigaze.face.FaceDetectorActivity;
 import quartifex.com.navigaze.features.NearbyFragment;
-
 
 
 public class FaceActivity extends AppCompatActivity implements FaceDetectorActivity.FaceListener, HomeFragment.OnFragmentInteractionListener, Network.NetworkListener, BaseFragment.FragmentActionListener {
@@ -45,6 +51,7 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
         rightEyeOpenProbs = new ArrayList<>();
         displayFragment();
 
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 1);
     }
 
     public void displayFragment() {
@@ -75,11 +82,10 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
                 updateCurrentPreviousFunction(LEFT_EYE_OPEN_FLAG);
             } else if (getAction(leftEyeOpenProbs, rightEyeOpenProbs) == RIGHT_EYE_OPEN_FLAG) {
                 updateCurrentPreviousFunction(RIGHT_EYE_OPEN_FLAG);
-			} else if (getAction(leftEyeOpenProbs,rightEyeOpenProbs) == BOTH_EYE_CLOSED) {
-			    updateCurrentPreviousFunction(BOTH_EYE_CLOSED);
-            }
-			else {
-			    updateCurrentPreviousFunction(NO_ACTION_FLAG);
+            } else if (getAction(leftEyeOpenProbs, rightEyeOpenProbs) == BOTH_EYE_CLOSED) {
+                updateCurrentPreviousFunction(BOTH_EYE_CLOSED);
+            } else {
+                updateCurrentPreviousFunction(NO_ACTION_FLAG);
             }
             leftEyeOpenProbs.clear();
             rightEyeOpenProbs.clear();
@@ -96,7 +102,7 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
             } else if (currentAction == RIGHT_EYE_OPEN_FLAG) {
                 currentFragmet.handleLeftBlink();
             } else if (currentAction == BOTH_EYE_CLOSED) {
-	            currentFragmet.handleBothOpenOrClose();
+                currentFragmet.handleBothOpenOrClose();
             } else {
                 // NO ACTION
             }
@@ -106,34 +112,34 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
         prevAction = currentAction;
     }
 
-	private int getAction (List<Float> leftEyeOpenProbs, List<Float> rightEyeOpenProbs) {
-		int leftEyeOpenCount = 0;
-		int rightEyeOpenCount = 0;
-		int bothEyeClosedCount = 0;
-		for (int i = 0; i < leftEyeOpenProbs.size(); i++) {
+    private int getAction(List<Float> leftEyeOpenProbs, List<Float> rightEyeOpenProbs) {
+        int leftEyeOpenCount = 0;
+        int rightEyeOpenCount = 0;
+        int bothEyeClosedCount = 0;
+        for (int i = 0; i < leftEyeOpenProbs.size(); i++) {
 //			Log.d("FACE DETECTIOn", "getAction: values"+leftEyeOpenProbs.get(i)+"/"+rightEyeOpenProbs.get(i));
-			if (isFirstEyeOpen(leftEyeOpenProbs.get(i), rightEyeOpenProbs.get(i))) {
-				leftEyeOpenCount++;
-			} else if (isFirstEyeOpen(rightEyeOpenProbs.get(i), leftEyeOpenProbs.get(i))) {
-				rightEyeOpenCount++;
-			} else if (isBothEyeClosed(leftEyeOpenProbs.get(i), rightEyeOpenProbs.get(i))) {
-			    bothEyeClosedCount++;
+            if (isFirstEyeOpen(leftEyeOpenProbs.get(i), rightEyeOpenProbs.get(i))) {
+                leftEyeOpenCount++;
+            } else if (isFirstEyeOpen(rightEyeOpenProbs.get(i), leftEyeOpenProbs.get(i))) {
+                rightEyeOpenCount++;
+            } else if (isBothEyeClosed(leftEyeOpenProbs.get(i), rightEyeOpenProbs.get(i))) {
+                bothEyeClosedCount++;
             }
-		}
+        }
 
-		Log.d("FACE DETECTIOn", "getAction: "+(FPS * 0.6)+"LEFT/RIGHT"+leftEyeOpenCount+"/"+rightEyeOpenCount);
-		if (isSufficient(rightEyeOpenCount)) {
+        Log.d("FACE DETECTIOn", "getAction: " + (FPS * 0.6) + "LEFT/RIGHT" + leftEyeOpenCount + "/" + rightEyeOpenCount);
+        if (isSufficient(rightEyeOpenCount)) {
 //			Log.d("FACE DETECTIOn", "getAction: RIght"+rightEyeOpenCount);
-			return LEFT_EYE_OPEN_FLAG;
-		}else if (isSufficient(leftEyeOpenCount)) {
+            return LEFT_EYE_OPEN_FLAG;
+        } else if (isSufficient(leftEyeOpenCount)) {
 //			Log.d("FACE DETECTIOn", "getAction: left"+leftEyeOpenCount);
-			return RIGHT_EYE_OPEN_FLAG;
-		}else if (isSufficient(bothEyeClosedCount)) {
+            return RIGHT_EYE_OPEN_FLAG;
+        } else if (isSufficient(bothEyeClosedCount)) {
             return BOTH_EYE_CLOSED;
         } else {
-			return NO_ACTION_FLAG;
-		}
-	}
+            return NO_ACTION_FLAG;
+        }
+    }
 
 
     private boolean isFirstEyeOpen(float firstEyeProb, float secondEyeProb) {
@@ -150,13 +156,13 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
         currentFragmet.idleClick(v);
     }
 
-    private boolean isBothEyeClosed (float firstEyeProb, float secondEyeProb) {
-        Log.d("FACE DETECTIOn closed", "getAction: secondEYEProb ::"+secondEyeProb+"first-->"+firstEyeProb);
+    private boolean isBothEyeClosed(float firstEyeProb, float secondEyeProb) {
+        Log.d("FACE DETECTIOn closed", "getAction: secondEYEProb ::" + secondEyeProb + "first-->" + firstEyeProb);
         return firstEyeProb <= 0.2f && secondEyeProb <= 0.2f;
     }
 
-    private boolean isSufficient (int count) {
-	    return count > FPS * 0.6;
+    private boolean isSufficient(int count) {
+        return count > FPS * 0.6;
     }
 
 
@@ -170,6 +176,7 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
             case HomeFragment.SPEED_DIAL:
                 break;
             case HomeFragment.SOS:
+                senSOS();
                 break;
             case HomeFragment.MEDIA:
                 break;
@@ -186,6 +193,39 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
         fragmentTransaction.add(R.id.fragment_container_list, currentFragmet).commit();
     }
 
+    private void senSOS() {
+        int PERMISSION_REQUEST_CODE = 1;
+        double longitude = 41.31396;
+        double latitude = -72.93081;
+        final MediaPlayer mp;
+
+        SmsManager smsManager = SmsManager.getDefault();
+        String sms = "I need help. Here's my location: " + "\nhttp://maps.google.com/maps?q=" + longitude + "," + latitude;
+        String[] friends = {"8572696933", "5516662811", "8572059380", "6177855790"};
+
+        for (String friend : friends) {
+
+            smsManager.sendTextMessage(friend, null, sms, null, null);
+
+        }
+
+        mp = MediaPlayer.create(FaceActivity.this, R.raw.siren);
+        mp.start();
+
+        AlertDialog alertDialog = new AlertDialog.Builder(FaceActivity.this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage("All your contacts have been notified.");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if (mp != null)
+                            mp.stop();
+                    }
+                });
+        alertDialog.show();
+    }
+
     @Override
     public void onBackAction() {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -200,7 +240,7 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
         if (o instanceof Data) {
             Data data = (Data) o;
             currentFragmet.updateView(data.getNodes());
-            Toast.makeText(this, data.getNodes().size()+"", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, data.getNodes().size() + "", Toast.LENGTH_SHORT).show();
         }
     }
 }
