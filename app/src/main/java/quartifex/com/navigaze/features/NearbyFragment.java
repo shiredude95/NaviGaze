@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
     private FunButton btnNearby;
     private FunButton btnMedia;
     private FunButton btnMessage;
+    private LinearLayout linearLayout;
 
     private List<View> btnList = new ArrayList<>();
     private CountDownTimer mCountDownTimer;
@@ -86,26 +88,22 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public View customFeatureFragment(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_home, parent, false);
+        rootView = inflater.inflate(R.layout.fragment_nearby, parent, false);
 
 
         String url = "http://wheelmap.org/api/nodes?api_key=-DFwtnoyB15aUuEvHq1d&bbox=13.341,52.505,13.434,52.523&per_page=10&wheelchair=yes";
         new Network(getContext(), Data.class).execute(url);
 
         btnSpeedDial = rootView.findViewById(R.id.button_speed_dial);
-        btnSpeedDial.setVisibility(View.INVISIBLE);
         btnSOS = rootView.findViewById(R.id.button_sos);
-        btnSOS.setVisibility(View.INVISIBLE);
         btnSmartHome = rootView.findViewById(R.id.button_smart_home);
-        btnSmartHome.setVisibility(View.INVISIBLE);
         btnNearby = rootView.findViewById(R.id.button_nearby);
-        btnNearby.setVisibility(View.INVISIBLE);
         btnMedia = rootView.findViewById(R.id.button_media);
-        btnMedia.setVisibility(View.INVISIBLE);
         btnMessage = rootView.findViewById(R.id.button_messages);
-        btnMessage.setVisibility(View.INVISIBLE);
+        linearLayout = rootView.findViewById(R.id.ll_nearby_fragment_container);
+        linearLayout.setVisibility(View.INVISIBLE);
 
-        getAllViewsInList(rootView.findViewById(R.id.ll_home_fragment_container));
+        getAllViewsInList(rootView.findViewById(R.id.ll_nearby_fragment_container));
         setAllViewsOnClickListener();
 
 
@@ -305,17 +303,13 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
     public <k> void updateView(List<k> nodes) {
         try{
             btnSpeedDial.setFunButtonText(((Node)nodes.get(0)).getName());
-            btnSpeedDial.setVisibility(View.VISIBLE);
             btnSOS.setFunButtonText(((Node)nodes.get(1)).getName());
-            btnSOS.setVisibility(View.VISIBLE);
             btnSmartHome.setFunButtonText(((Node)nodes.get(2)).getName());
-            btnSmartHome.setVisibility(View.VISIBLE);
             btnNearby.setFunButtonText(((Node)nodes.get(3)).getName());
-            btnNearby.setVisibility(View.VISIBLE);
             btnMedia.setFunButtonText(((Node)nodes.get(4)).getName());
-            btnMedia.setVisibility(View.VISIBLE);
             btnMessage.setFunButtonText(((Node)nodes.get(5)).getName());
-            btnMessage.setVisibility(View.VISIBLE);
+            linearLayout.setVisibility(View.VISIBLE);
+            Log.d("NEARBY", ((Node)nodes.get(0)).toString());
         } catch (Exception e){
             e.printStackTrace();
         }
