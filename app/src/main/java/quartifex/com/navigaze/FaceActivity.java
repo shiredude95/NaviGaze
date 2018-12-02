@@ -24,6 +24,7 @@ import androidx.fragment.app.FragmentTransaction;
 import quartifex.com.navigaze.HttpWrapper.Network;
 import quartifex.com.navigaze.POJO.Data;
 import quartifex.com.navigaze.face.FaceDetectorActivity;
+import quartifex.com.navigaze.features.MessageFragment;
 import quartifex.com.navigaze.features.NearbyFragment;
 
 
@@ -181,6 +182,7 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
             case HomeFragment.MEDIA:
                 break;
             case HomeFragment.MESSAGE:
+                currentFragmet = new MessageFragment();
                 break;
             case HomeFragment.NEARBY:
                 currentFragmet = new NearbyFragment();
@@ -194,7 +196,6 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
     }
 
     private void senSOS() {
-        int PERMISSION_REQUEST_CODE = 1;
         double longitude = 41.31396;
         double latitude = -72.93081;
         final MediaPlayer mp;
