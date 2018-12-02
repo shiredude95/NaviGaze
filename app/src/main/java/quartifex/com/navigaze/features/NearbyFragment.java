@@ -201,7 +201,6 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
 
                 }
 
-                Log.d("Randi", String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
                 button.setProgressBarVisibility(true);
                 mCountDownTimer = new CountDownTimer(timeConstant * 1000, timeConstant * 10) {
                     @Override
