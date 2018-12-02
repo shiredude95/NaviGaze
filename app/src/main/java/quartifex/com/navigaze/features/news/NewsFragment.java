@@ -59,7 +59,7 @@ public class NewsFragment extends BaseFragment implements View.OnClickListener{
 
 	private void incrementcurrentItemIndex() {
 
-		if (currentItemIndex < btnList.size() - 1) {
+		if (currentItemIndex < newsItemList.size() - 1) {
 			currentItemIndex += 1;
 		}else{
 			currentItemIndex=0;
@@ -70,7 +70,7 @@ public class NewsFragment extends BaseFragment implements View.OnClickListener{
 		if (currentItemIndex > 0) {
 			currentItemIndex -= 1;
 		}else {
-			currentItemIndex=btnList.size()-1;
+			currentItemIndex=newsItemList.size()-1;
 		}
 	}
 
@@ -102,6 +102,9 @@ public class NewsFragment extends BaseFragment implements View.OnClickListener{
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		newsItemList=createNewsItems();
+		newsTitle.setText(newsItemList.get(getCurrentItemIndex()).newsTitle);
+		newsDetail.setText(newsItemList.get(getCurrentItemIndex()).newsContent);
+
 	}
 
 
@@ -219,6 +222,7 @@ public class NewsFragment extends BaseFragment implements View.OnClickListener{
 
 	private void nextAction(){
 
+	    incrementcurrentItemIndex();
 	    newsTitle.setText(newsItemList.get(getCurrentItemIndex()).newsTitle);
 	    newsDetail.setText(newsItemList.get(getCurrentItemIndex()).newsContent);
 
@@ -282,12 +286,12 @@ public class NewsFragment extends BaseFragment implements View.OnClickListener{
 		List<NewsItem> newsItems = new ArrayList<>();
 
 		newsItems.add(new NewsItem(0,getActivity().getResources().getString(R.string.art_title_1),getActivity().getResources().getString(R.string.art_content_1)));
-		newsItems.add(new NewsItem(0,getActivity().getResources().getString(R.string.art_title_2),getActivity().getResources().getString(R.string.art_content_2)));
-		newsItems.add(new NewsItem(0,getActivity().getResources().getString(R.string.art_title_3),getActivity().getResources().getString(R.string.art_content_3)));
-		newsItems.add(new NewsItem(0,getActivity().getResources().getString(R.string.art_title_4),getActivity().getResources().getString(R.string.art_content_4)));
-		newsItems.add(new NewsItem(0,getActivity().getResources().getString(R.string.art_title_6),getActivity().getResources().getString(R.string.art_content_6)));
-		newsItems.add(new NewsItem(0,getActivity().getResources().getString(R.string.art_title_8),getActivity().getResources().getString(R.string.art_content_8)));
-		newsItems.add(new NewsItem(0,getActivity().getResources().getString(R.string.art_title_9),getActivity().getResources().getString(R.string.art_content_9)));
+		newsItems.add(new NewsItem(1,getActivity().getResources().getString(R.string.art_title_2),getActivity().getResources().getString(R.string.art_content_2)));
+		newsItems.add(new NewsItem(2,getActivity().getResources().getString(R.string.art_title_3),getActivity().getResources().getString(R.string.art_content_3)));
+		newsItems.add(new NewsItem(3,getActivity().getResources().getString(R.string.art_title_4),getActivity().getResources().getString(R.string.art_content_4)));
+		newsItems.add(new NewsItem(4,getActivity().getResources().getString(R.string.art_title_6),getActivity().getResources().getString(R.string.art_content_6)));
+		newsItems.add(new NewsItem(5,getActivity().getResources().getString(R.string.art_title_8),getActivity().getResources().getString(R.string.art_content_8)));
+		newsItems.add(new NewsItem(6,getActivity().getResources().getString(R.string.art_title_9),getActivity().getResources().getString(R.string.art_content_9)));
 
 
 

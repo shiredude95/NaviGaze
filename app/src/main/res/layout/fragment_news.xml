@@ -19,10 +19,13 @@
     <LinearLayout
         android:background="@drawable/news_bg_shape"
         android:layout_width="match_parent"
-        android:layout_alignTop="@id/control_content_divider"
-        android:layout_height="wrap_content"
+        android:layout_above="@id/control_content_divider"
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:orientation="vertical">
-
 
         <TextView
             android:layout_width="match_parent"
@@ -57,8 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:background="@android:color/darker_gray"
-        android:layout_alignTop="@id/ll_news_control_container"/>
-
+        android:layout_above="@id/ll_news_control_container"/>
 
     <LinearLayout
         android:layout_alignParentBottom="true"
@@ -100,8 +102,6 @@
 
 
     </LinearLayout>
-
-
 
 
 

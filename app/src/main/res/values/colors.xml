@@ -5,4 +5,6 @@
     <color name="colorAccent">#D81B60</color>
     <color name="lightColorAccent">#ff5c8d</color>
     <color name="textColor">#424242</color>
+    <color name="colorActionBar">#212121</color>
+
 </resources>

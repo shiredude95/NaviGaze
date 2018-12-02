@@ -1,11 +1,21 @@
 package quartifex.com.navigaze;
 
+
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
+
 import android.Manifest;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +26,11 @@ import com.google.android.gms.vision.face.Face;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import androidx.appcompat.app.ActionBar;
+
 import androidx.appcompat.app.AlertDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
@@ -24,11 +38,13 @@ import androidx.fragment.app.FragmentTransaction;
 import quartifex.com.navigaze.HttpWrapper.Network;
 import quartifex.com.navigaze.POJO.Data;
 import quartifex.com.navigaze.face.FaceDetectorActivity;
+
+
+
 import quartifex.com.navigaze.features.MessageFragment;
 import quartifex.com.navigaze.features.NearbyFragment;
 import quartifex.com.navigaze.features.SmartHomeFragment;
 import quartifex.com.navigaze.features.news.NewsFragment;
-
 
 public class FaceActivity extends AppCompatActivity implements FaceDetectorActivity.FaceListener, HomeFragment.OnFragmentInteractionListener, Network.NetworkListener, BaseFragment.FragmentActionListener {
 
@@ -53,6 +69,24 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
         leftEyeOpenProbs = new ArrayList<>();
         rightEyeOpenProbs = new ArrayList<>();
         displayFragment();
+
+	    ActionBar actionbar = getSupportActionBar();
+	    actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorActionBar)));
+
+
+	    Window window = getWindow();
+
+	    // clear FLAG_TRANSLUCENT_STATUS flag:
+	    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+	    // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+	    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+	    // finally change the color
+	    window.setStatusBarColor(getResources().getColor(android.R.color.black));
+
+	    getSupportActionBar().setTitle("Home");
+
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 1);
     }
@@ -120,6 +154,7 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
         int rightEyeOpenCount = 0;
         int bothEyeClosedCount = 0;
         for (int i = 0; i < leftEyeOpenProbs.size(); i++) {
+
 //			Log.d("FACE DETECTIOn", "getAction: values"+leftEyeOpenProbs.get(i)+"/"+rightEyeOpenProbs.get(i));
             if (isFirstEyeOpen(leftEyeOpenProbs.get(i), rightEyeOpenProbs.get(i))) {
                 leftEyeOpenCount++;
@@ -170,6 +205,11 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
 
 
     @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+    }
+
+    @Override
     public void onActionClick(String action) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -179,6 +219,7 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
                 senSOS();
                 break;
             case HomeFragment.MEDIA:
+                getSupportActionBar().setTitle("News");
                 currentFragmet = new NewsFragment();
                 break;
             case HomeFragment.MESSAGE:
@@ -190,6 +231,7 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
                 currentFragmet = new NearbyFragment();
                 break;
             case HomeFragment.SMART_HOME:
+                getSupportActionBar().setTitle("Smart Home");
                 currentFragmet = new SmartHomeFragment();
                 break;
         }
