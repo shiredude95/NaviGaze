@@ -48,4 +48,6 @@ public abstract class BaseFragment extends Fragment {
 
 	public void idleClick(View v) {}
 
+
+
 }

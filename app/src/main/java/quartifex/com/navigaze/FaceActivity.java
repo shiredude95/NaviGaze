@@ -37,6 +37,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import quartifex.com.navigaze.HttpWrapper.Network;
 import quartifex.com.navigaze.POJO.Data;
+import quartifex.com.navigaze.POJO.ResponseObject;
 import quartifex.com.navigaze.face.FaceDetectorActivity;
 
 import quartifex.com.navigaze.news.NewsFragment;
@@ -274,6 +275,11 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
         if (o instanceof Data) {
             Data data = (Data) o;
             currentFragmet.updateView(data.getNodes());
+        }
+        else if(o instanceof ResponseObject) {
+	        ResponseObject data = (ResponseObject) o;
+	        currentFragmet.updateView(data.getFeatures());
+
         }
     }
 }
