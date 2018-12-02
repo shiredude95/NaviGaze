@@ -1,97 +1,94 @@
-<LinearLayout
-
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/ll_home_fragment_container"
+    android:id="@+id/ll_message_fragment_container"
     android:divider="?android:attr/listDivider"
     android:orientation="vertical"
     android:showDividers="middle"
-    tools:context=".HomeFragment"
+    tools:context="features.MessageFragment"
     android:background="@android:color/white">
+
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="25dp"
         android:onClick="idleClick"
         android:clickable="true"
         android:focusable="true" />
 
     <quartifex.com.navigaze.FunButton
-        android:id="@+id/button_sos"
+        android:id="@+id/button_h1"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:background="?android:selectableItemBackground"
-        custom:buttonText="SOS"
-        android:clickable="true"
-        android:focusable="true"/>
-
+        custom:buttonText="I need water."/>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="25dp"
         android:onClick="idleClick"
         android:clickable="true"
-        android:focusable="true"
-        />
+        android:focusable="true" />
 
     <quartifex.com.navigaze.FunButton
-        android:id="@+id/button_smart_home"
+        android:id="@+id/button_h2"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:background="?android:selectableItemBackground"
-        custom:buttonText="Smart Home"
+        custom:buttonText="I am hungry."
         android:clickable="true"
         android:focusable="true"/>
 
+
     <View
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="25dp"
         android:onClick="idleClick"
         android:clickable="true"
         android:focusable="true"/>
 
     <quartifex.com.navigaze.FunButton
-        android:id="@+id/button_nearby"
+        android:id="@+id/button_h3"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:background="?android:selectableItemBackground"
-        custom:buttonText="Nearby"/>
+        custom:buttonText="I need to use the restroom."
+        android:clickable="true"
+        android:focusable="true"/>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="25dp"
         android:onClick="idleClick"
         android:clickable="true"
         android:focusable="true"/>
 
     <quartifex.com.navigaze.FunButton
-        android:id="@+id/button_media"
+        android:id="@+id/button_h4"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:background="?android:selectableItemBackground"
-        custom:buttonText="Media"/>
-
+        custom:buttonText="I am not feeling well."/>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="25dp"
         android:onClick="idleClick"
         android:clickable="true"
         android:focusable="true"/>
 
     <quartifex.com.navigaze.FunButton
-        android:id="@+id/button_messages"
+        android:id="@+id/button_h5"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:background="?android:selectableItemBackground"
-        custom:buttonText="Message"/>
+        custom:buttonText="Would you mind coming here?"/>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="25dp"
         android:onClick="idleClick"
         android:clickable="true"
         android:focusable="true"/>

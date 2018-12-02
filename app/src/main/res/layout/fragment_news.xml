@@ -23,13 +23,13 @@
         android:layout_height="match_parent">
     </com.yuyakaido.android.cardstackview.CardStackView>
 
+
     <View
         android:id="@+id/control_content_divider"
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:background="@android:color/darker_gray"
         android:layout_alignTop="@id/ll_news_control_container"/>
-
 
     <LinearLayout
         android:layout_alignParentBottom="true"
