@@ -166,6 +166,7 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
         if (o instanceof Data) {
             Data data = (Data) o;
             currentFragmet.updateView(data.getNodes());
+            Toast.makeText(this, data.getNodes().size()+"", Toast.LENGTH_SHORT).show();
         }
     }
 }
