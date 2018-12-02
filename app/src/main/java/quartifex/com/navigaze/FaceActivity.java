@@ -2,10 +2,8 @@ package quartifex.com.navigaze;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.FrameLayout;
 import android.util.Log;
-import android.widget.TextView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.face.Face;
@@ -14,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import quartifex.com.navigaze.HttpWrapper.Network;
@@ -22,7 +19,7 @@ import quartifex.com.navigaze.POJO.Data;
 import quartifex.com.navigaze.face.FaceDetectorActivity;
 import quartifex.com.navigaze.features.NearbyFragment;
 
-public class FaceActivity extends AppCompatActivity implements FaceDetectorActivity.FaceListener, HomeFragment.OnFragmentInteractionListener, HomeFragment.HomeActionListener, Network.NetworkListener {
+public class FaceActivity extends AppCompatActivity implements FaceDetectorActivity.FaceListener, HomeFragment.OnFragmentInteractionListener, Network.NetworkListener, HomeFragment.HomeActionListener {
 
 
     private List<Float> leftEyeOpenProbs;
@@ -32,10 +29,11 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
     private int RIGHT_EYE_OPEN_FLAG = 1;
     private int NO_ACTION_FLAG = 2;
     private float MIN_PROBABILITY_THRESHOLD = 0.2f;
-    private BaseFragment currentFragmet;
-
+    private int currentAction = -1;
+    private int prevAction = -1;
 
     HomeFragment homeFragment;
+    private BaseFragment currentFragmet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,15 +70,33 @@ public class FaceActivity extends AppCompatActivity implements FaceDetectorActiv
             rightEyeOpenProbs.add(face.getIsRightEyeOpenProbability());
         } else {
             if (getAction(leftEyeOpenProbs, rightEyeOpenProbs) == LEFT_EYE_OPEN_FLAG) {
-                homeFragment.handleRightBlink();
+                updateCurrentPreviousFunction(LEFT_EYE_OPEN_FLAG);
             } else if (getAction(leftEyeOpenProbs, rightEyeOpenProbs) == RIGHT_EYE_OPEN_FLAG) {
-                homeFragment.handleLeftBlink();
+                updateCurrentPreviousFunction(RIGHT_EYE_OPEN_FLAG);
             } else {
-                homeFragment.handleBothOpenOrClose();
+                updateCurrentPreviousFunction(NO_ACTION_FLAG);
             }
             leftEyeOpenProbs.clear();
             rightEyeOpenProbs.clear();
         }
+    }
+
+    private void updateCurrentPreviousFunction(int forAction) {
+        currentAction = forAction;
+        Log.d("Action update", "updateCurrentPreviousFunction:: current action::" + currentAction
+                + "previous action::" + prevAction);
+        if (currentAction != prevAction) {
+            if (currentAction == LEFT_EYE_OPEN_FLAG) {
+                homeFragment.handleRightBlink();
+            } else if (currentAction == RIGHT_EYE_OPEN_FLAG) {
+                homeFragment.handleLeftBlink();
+            } else {
+                homeFragment.handleBothOpenOrClose();
+            }
+        } else {
+            return;
+        }
+        prevAction = currentAction;
     }
 
     private int getAction(List<Float> leftEyeOpenProbs, List<Float> rightEyeOpenProbs) {
