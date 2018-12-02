@@ -229,13 +229,16 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 			isCountdownRunning = false;
 			mCountDownTimer.cancel();
 			for (View v1 : btnList) {
-				if (v1 instanceof FunButton) ((FunButton) v1).setProgressBarVisibility(false);
+				if (v1 instanceof FunButton) {
+                    ((FunButton) v1).setProgressbarProgress(0);
+				    ((FunButton) v1).setProgressBarVisibility(false);
+                }
 			}
 		}
 		for (View v1 : btnList) {
 			if (!(v1 instanceof FunButton)) v1.setBackgroundColor(getResources().getColor(android.R.color.white));
 		}
-		if(v!=null) v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+		if(v!=null) v.setBackgroundColor(getResources().getColor(R.color.lightColorAccent));
 	}
 
 	//handle idle clicks

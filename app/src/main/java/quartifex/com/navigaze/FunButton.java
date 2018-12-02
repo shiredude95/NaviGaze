@@ -39,9 +39,15 @@ public class FunButton extends LinearLayout {
 	}
 
 	public void setProgressBarVisibility(boolean visibile){
-
 		progressBar.setVisibility(visibile?VISIBLE:INVISIBLE);
+		if (visibile) {
+			funButtonText.setTextColor(getResources().getColor(R.color.colorAccent));
+		} else {
+			funButtonText.setTextColor(getResources().getColor(R.color.textColor));
+		}
+
 	}
+
 
 	public void setFunButtonText(String buttonLabel){
 
