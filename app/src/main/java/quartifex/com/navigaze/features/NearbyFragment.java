@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import quartifex.com.navigaze.BaseFragment;
 import quartifex.com.navigaze.FaceActivity;
@@ -34,7 +35,6 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
 
 
     View rootView;
-    private HomeFragment.OnFragmentInteractionListener mListener;
     private int timeConstant = 5;
 
 
@@ -132,32 +132,17 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void handleBothOpenOrClose() {
-
-    }
-
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        ((FaceActivity)getActivity()).onBackAction();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof HomeFragment.OnFragmentInteractionListener) {
-            mListener = (HomeFragment.OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -240,20 +225,22 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
         });
     }
 
-    //handle idle clicks
-    public void idleClick(View v) {
-
+    private void flushButtonColorsOnIdle(@Nullable View v){
         if (isCountdownRunning && mCountDownTimer != null) {
-
             isCountdownRunning = false;
             mCountDownTimer.cancel();
             for (View v1 : btnList) {
-                ((FunButton) v1).setProgressBarVisibility(false);
+                if (v1 instanceof FunButton) ((FunButton) v1).setProgressBarVisibility(false);
             }
         }
-        Toast.makeText(getActivity(), "IDLE", Toast.LENGTH_SHORT).show();
-
+        for (View v1 : btnList) {
+            if (!(v1 instanceof FunButton)) v1.setBackgroundColor(getResources().getColor(android.R.color.white));
+        }
+        if(v!=null) v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
     }
+
+    //handle idle clicks
+    public void idleClick(View v) {flushButtonColorsOnIdle(v);}
 
     private void idleClickNoTouch(final View v) {
 
