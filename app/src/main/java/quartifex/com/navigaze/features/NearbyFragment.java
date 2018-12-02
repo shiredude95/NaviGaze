@@ -1,11 +1,10 @@
 package quartifex.com.navigaze.features;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.os.CountDownTimer;
 import android.os.Looper;
 import android.util.Log;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.core.app.ActivityCompat;
 import quartifex.com.navigaze.BaseFragment;
 import quartifex.com.navigaze.FaceActivity;
 import quartifex.com.navigaze.FunButton;
@@ -90,8 +90,18 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
     public View customFeatureFragment(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_nearby, parent, false);
 
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    Activity#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for Activity#requestPermissions for more details.
+            return null;
+        }
 
-        String url = "http://wheelmap.org/api/nodes?api_key=-DFwtnoyB15aUuEvHq1d&bbox=13.341,52.505,13.434,52.523&per_page=10&wheelchair=yes";
+        String url = "http://wheelmap.org/api/nodes?api_key=-DFwtnoyB15aUuEvHq1d&bbox=" + 41.2103538 + "," + (-72.8286044) + "," + 41.3103538 + "," + (-72.9286044) + "&per_page=10&wheelchair=yes";
         new Network(getContext(), Data.class).execute(url);
 
         btnSpeedDial = rootView.findViewById(R.id.button_speed_dial);
@@ -204,7 +214,8 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
                     isCountdownRunning = false;
                     mCountDownTimer.cancel();
                     for (View v1 : btnList) {
-                        if (v1 instanceof FunButton) ((FunButton) v1).setProgressBarVisibility(false);
+                        if (v1 instanceof FunButton)
+                            ((FunButton) v1).setProgressBarVisibility(false);
 
                     }
                 }
@@ -230,7 +241,7 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
                         button.setProgressbarProgress(100);
                         button.setProgressBarVisibility(false);
                         isCountdownRunning = false;
-                        ((FaceActivity)getActivity()).onActionClick(action);
+                        ((FaceActivity) getActivity()).onActionClick(action);
                     }
                 };
                 mCountDownTimer.start();
@@ -301,17 +312,19 @@ public class NearbyFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public <k> void updateView(List<k> nodes) {
-        try{
-            btnSpeedDial.setFunButtonText(((Node)nodes.get(0)).getName());
-            btnSOS.setFunButtonText(((Node)nodes.get(1)).getName());
-            btnSmartHome.setFunButtonText(((Node)nodes.get(2)).getName());
-            btnNearby.setFunButtonText(((Node)nodes.get(3)).getName());
-            btnMedia.setFunButtonText(((Node)nodes.get(4)).getName());
-            btnMessage.setFunButtonText(((Node)nodes.get(5)).getName());
+        try {
+            Toast.makeText(getActivity(), ((Node) nodes.get(0)).getName(), Toast.LENGTH_SHORT).show();
+            btnSpeedDial.setFunButtonText(((Node) nodes.get(0)).getName());
+            btnSOS.setFunButtonText(((Node) nodes.get(1)).getName());
+            btnSmartHome.setFunButtonText(((Node) nodes.get(2)).getName());
+            btnNearby.setFunButtonText(((Node) nodes.get(3)).getName());
+            btnMedia.setFunButtonText(((Node) nodes.get(4)).getName());
+            btnMessage.setFunButtonText(((Node) nodes.get(5)).getName());
             linearLayout.setVisibility(View.VISIBLE);
-            Log.d("NEARBY", ((Node)nodes.get(0)).toString());
-        } catch (Exception e){
+            Log.d("NEARBY", ((Node) nodes.get(0)).toString());
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }
